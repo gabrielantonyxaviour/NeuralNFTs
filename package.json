@@ -1,0 +1,14 @@
+{
+  "name": "testingFeatures",
+  "version": "1.0.0",
+  "author": "Gabriel",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "fs": "^0.0.1-security",
+    "mime": "^3.0.0",
+    "node-fetch": "^3.2.6",
+    "web3.storage": "^4.3.0"
+  },
+  "type": "module"
+}
