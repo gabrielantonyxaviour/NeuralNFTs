@@ -12,7 +12,7 @@ const styles = {
     fontWeight: "500",
     fontSize: "14px",
     padding: "0 10px",
-    color: "#ffffff",
+    color: "#000000",
     background: "#ffc107",
   },
 };
@@ -103,7 +103,7 @@ function Chains() {
   };
 
   const menu = (
-    <Menu className="bg-dark" onClick={handleMenuClick}>
+    <Menu className="bg-dark  " onClick={handleMenuClick}>
       {menuItems.map((item) => (
         <Menu.Item key={item.key} icon={item.icon} style={styles.item}>
           <span style={{ marginLeft: "5px" }}>{item.value}</span>
@@ -118,15 +118,15 @@ function Chains() {
     <div className="mx-2 mb-3 mb-md-0 btn">
       <Dropdown className="w-100" overlay={menu} trigger={["click"]}>
         <Button
-          className="btn btn-warning rounded"
+          className="btn btn-warning rounded fw-bold"
           key={selected?.key}
           icon={selected?.icon}
           style={{ ...styles.button, ...styles.item }}
         >
-          <span className="text-white" style={{ marginLeft: "5px" }}>
+          <span className="text-black" style={{ marginLeft: "5px" }}>
             {selected?.value}
           </span>
-          <DownOutlined className="text-white" />
+          <DownOutlined className="text-black" />
         </Button>
       </Dropdown>
     </div>

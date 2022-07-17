@@ -1,62 +1,79 @@
 import React, { useState } from "react";
-import { useMoralis } from "react-moralis";
+import Marquee from "react-fast-marquee";
+import { useMoralis, useWeb3Contract } from "react-moralis";
 import { motion, AnimatePresence } from "framer-motion";
+import ABI from "../contracts/bayc_abi.json";
 
 function Message() {
   const { isAuthenticated, user } = useMoralis(); // eslint-disable-line
+  // eslint-disable-next-line
   const [dummy, setDummy] = useState([
     "1N23N",
     "2L2MN",
     "3WKLM",
     "4XLKM3",
     "A223J",
+    "ASDAS",
+    "A2ASD",
   ]);
 
-  const [activeNeuralNFT, setActiveNeuralNFT] = useState(dummy[0]);
+  // eslint-disable-next-line
+  const { runContractFunction, contractResponse, error, isRunning, isLoading } =
+    useWeb3Contract({
+      abi: ABI,
+      contractAddress: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+      functionName: "observe",
+      params: {
+        secondsAgos: [0, 10],
+      },
+    });
 
-  const Cards = ({ data, title }) => {
+  function GithubCard(props) {
     return (
-      <React.Fragment>
-        {data.map((level) => (
-          <div
-            className="card my-2 py-2 rounded bg-dark mx-2 d-flex flex-column justify-content-center align-items-center"
-            style={{ width: "15rem" }}
-          >
+      <a
+        className="d-flex align-items-center justify-content-center"
+        href={props.src}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <motion.div
+          initial={{ rotate: props.straight ? 0 : props.right ? 5 : -5 }}
+          whileHover={
+            props.threed
+              ? {
+                  y: 10,
+                  x: 10,
+                  filter: "invert(1) hue-rotate(20deg)",
+                }
+              : { scale: 1.08 }
+          }
+          className="card bg-black rounded p-shadow text-primary m-3 d-flex align-items-center"
+          style={{
+            width: "20em",
+          }}
+        >
+          <div className="card-body d-flex align-content-between bg-dark text-white flex-wrap">
+            <h5 className="text-white fw-bold card-title col-12 p-0">
+              {props.title ? props.title : "Super Skywalker"}
+            </h5>
             <img
-              src={`https://media4.giphy.com/media/QyJTDR8VkUtyKHNPm9/giphy.gif?cid=ecf05e474xwxhwf6g9y2uxjv5g42tzcwtdsucszwwvsg5e3m&rid=giphy.gif&ct=s`}
+              src={`https://media3.giphy.com/media/QsOq3W7wCoa0sC2QEN/giphy.gif?cid=ecf05e47vw37g2a9n4oymaagriqb2ongpm9kz137qwk47b3l&rid=giphy.gif&ct=s`}
               className="card-img-top"
-              style={{ height: "150px", width: "150px" }}
+              style={{ height: "150px", width: "100%", objectFit: "none" }}
               alt="..."
             />
-            <div className="card-body text-center">
-              <h5 className="card-title text-white">{`${title} #${level}`}</h5>
-
-              <div
-                onClick={() => setActiveNeuralNFT(level)}
-                className="btn btn-secondary text-dark text-white fw-bold mx-1"
-              >
-                Manage
-              </div>
-              <div
-                onClick={() => {
-                  // Promt user if he really wants to delete
-                  let warning = prompt(
-                    "Are you sure you want to delete this NeuralNFT?",
-                    "Yes",
-                  );
-                  warning === "Yes" &&
-                    setDummy(data.filter((item) => item !== level));
-                }}
-                className="btn text-dark text-white fw-bold btn-danger  mx-1"
-              >
-                Burn
-              </div>
-            </div>
+            <p className="mt-3 card-text text-secondary font-weight-normal col-12 p-0">
+              This model can be used to predict the price of a stock.
+              {props.text
+                ? props.text
+                : "Some quick example text to build on the card title and make up the bulk of the card's content."}
+            </p>
           </div>
-        ))}
-      </React.Fragment>
+        </motion.div>
+      </a>
     );
-  };
+  }
+
   return (
     <AnimatePresence>
       <motion.div
@@ -65,55 +82,39 @@ function Message() {
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 2.5 }}
       >
-        <div className="text-white mt-5">
+        <div className="text-white mt-5 text-end">
           <h1 className="fw-bold mb-5 text-white">Dashboard</h1>
-
-          <h4 className=" mb-3 text-white">Recent Listings</h4>
-          <div className="row justify-content-between">
-            <Cards data={dummy} title="NeuralNFT" type="cricket" />
+          <div className="mt-4 justify-content-end">
+            <h3 className="fw-bold text-white">Listings</h3>
           </div>
+          <h5 className="mb-3 text-secondary">
+            {" "}
+            ↩️ Select a NeuralNFT🧠 to use the model
+          </h5>
 
-          <div className="mt-4 d-flex justify-content-between">
-            <div className=" col-3 me-3 justify-content-end">
-              <h3 className="fw-bold text-secondary">
-                ^ Select a NeuralNFT to update on-chain data.
-              </h3>
-              <h6 className="text-white">
-                Currently selected:{" "}
-                <span className="text-warning">#{activeNeuralNFT}</span>
-              </h6>
-            </div>
-
-            <form className="d-flex col-4 justify-content-end">
-              <div className="mb-3">
-                <textarea
-                  className="form-control"
-                  name=""
-                  id=""
-                  rows="3"
-                ></textarea>
-              </div>
-
-              <button type="submit" className="btn btn-dark fw-bold mb-3">
-                Update Metadata
-              </button>
-            </form>
-
-            <form className="d-flex col-4 justify-content-end">
-              <div className="mb-3">
-                <textarea
-                  className="form-control"
-                  name=""
-                  id=""
-                  rows="3"
-                ></textarea>
-              </div>
-
-              <button type="submit" className="btn btn-dark fw-bold mb-3">
-                Update Firmware
-              </button>
-            </form>
-          </div>
+          <motion.div className="mt-md-1 pt-md-2 pt-3 mt-3">
+            <Marquee
+              className="projects-marquee"
+              direction="right"
+              speed={120}
+              pauseOnHover
+              gradient
+              gradientWidth={0}
+              gradientColor={[31, 31, 31]}
+            >
+              {dummy.concat(dummy).map((project, index) => (
+                <GithubCard
+                  threed
+                  straight
+                  key={index}
+                  src={project}
+                  title={project}
+                  text={project}
+                  technologies={project}
+                />
+              ))}
+            </Marquee>
+          </motion.div>
         </div>
       </motion.div>
     </AnimatePresence>

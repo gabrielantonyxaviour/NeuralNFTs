@@ -90,7 +90,9 @@ function Account() {
                 }}
               >
                 <img src={icon} alt={title} style={styles.icon} />
-                <Text style={{ fontSize: "14px" }}>{title}</Text>
+                <Text style={{ fontSize: "14px", color: "black" }}>
+                  {title}
+                </Text>
               </div>
             ))}
           </div>
@@ -102,14 +104,16 @@ function Account() {
   return (
     <>
       <div
-        className="btn btn-sm d-flex align-items-center justify-content-center pt-2"
+        className="btn btn-sm d-flex align-items-center text-black justify-content-center pt-2"
         style={{
           cursor: "pointer",
           backgroundColor: "#ffc107",
         }}
         onClick={() => setIsModalVisible(true)}
       >
-        <p className="text-white mt-2 me-2">{getEllipsisTxt(account, 6)}</p>
+        <p className="text-black fw-bold mt-2 me-2">
+          {getEllipsisTxt(account, 6)}
+        </p>
         <Blockie currentWallet scale={3} />
       </div>
       <Modal

@@ -87,23 +87,16 @@ function Home() {
             />
           </div>
           <div className="col-md-7 mt-5 mt-md-0">
-            <h1 className="fw-bold text-white w-75">
-              Secure and state of the art
-            </h1>
+            <h1 className="fw-bold text-white w-75">How to use?</h1>
             <h4 className="text-secondary fw-light w-75">
-              Devices connected to the platform are verified based on their
-              firmware, owner details, manufacturer metadata and a device
-              identifier. This merkle hash is used to call a smart contract on a
-              blockchain to check if the device was already minted (registered)
-              on the platform. The project consists of three layers - a front
-              end dApp, a device firmware and a smart contract that is deployed
-              on the blockchain network, “Polygon”. The decentralized data
-              storage is provided by IPFS.
+              A person can use the NeuralNFTs platform to run a ML model which
+              is an on-chain component to perform client side processes with the
+              model.
             </h4>
           </div>
         </div>
 
-        <div className="d-md-flex align-items-center justify-content-center my-5 container">
+        {/* <div className="d-md-flex align-items-center justify-content-center my-5 container">
           <div className="col-md-6 mt-5 mt-md-0 text-end">
             <h1 className="fw-bold text-white">
               Towards Decentalized Security
@@ -130,7 +123,7 @@ function Home() {
               srcSet=""
             />
           </div>
-        </div>
+        </div> */}
       </motion.div>
     </AnimatePresence>
   );
