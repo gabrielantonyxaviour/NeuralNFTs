@@ -7,12 +7,12 @@ import { motion, AnimatePresence } from "framer-motion";
 function Message() {
   const { isAuthenticated, user } = useMoralis(); // eslint-disable-line
 
+  const contract_address = "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d";
+
   const [nfts, setNfts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   function GithubCard(props) {
-    console.log(props);
-
     return (
       <a
         className="d-flex align-items-center rounded justify-content-center"
@@ -33,7 +33,7 @@ function Message() {
           }
           className="rounded p-shadow text-primary m-3 d-flex align-items-center"
           style={{
-            width: "20em",
+            width: "18em",
           }}
         >
           <div className="card-body d-flex align-content-between bg-dark text-white flex-wrap">
@@ -63,9 +63,7 @@ function Message() {
 
   useEffect(() => {
     axios
-      .request({
-        method: "GET",
-        url: "https://api.nftport.xyz/v0/nfts/0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+      .get(`https://api.nftport.xyz/v0/nfts/${contract_address}`, {
         params: {
           chain: "ethereum",
         },
@@ -81,11 +79,10 @@ function Message() {
         for (let i = 0; i < tokens.length; i++) {
           await axios
             .get(
-              `https://api.nftport.xyz/v0/nfts/0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d/${tokens[i].token_id}`,
+              `https://api.nftport.xyz/v0/nfts/${contract_address}/${tokens[i].token_id}`,
               {
                 params: {
                   chain: "ethereum",
-                  contract: "0x17517F552d14E3ae1b2a8005f594D7916CE6466d",
                 },
                 headers: {
                   "Content-Type": "application/json",
@@ -131,7 +128,22 @@ function Message() {
             ↩️ Select a NeuralNFT🧠 to use the model
           </h5>
 
-          {loading && <div>Loading...</div>}
+          {loading && (
+            <div className="mt-5">
+              <div className="progress">
+                <div
+                  className="text-end progress-bar progress-bar-striped bg-dark progress-bar-animated"
+                  role="progressbar"
+                  ariaValuenow="75"
+                  ariaValuemin="0"
+                  ariaValuemax="100"
+                  style={{ width: "100%" }}
+                >
+                  Loading...
+                </div>
+              </div>
+            </div>
+          )}
           {!loading && (
             <motion.div
               // style={{ clipPath: "inset( -100vw 0 -100vw  -100vw)" }}
