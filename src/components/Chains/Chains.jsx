@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, Dropdown, Button } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { PolygonLogo /* BSCLogo, ETHLogo, AvaxLogo, */ } from "./Logos";
+import { PolygonLogo, ETHLogo /* BSCLogo, AvaxLogo, */ } from "./Logos";
 import { useChain, useMoralis } from "react-moralis";
 
 const styles = {
@@ -33,11 +33,11 @@ const menuItems = [
   //   value: "Ropsten Testnet",
   //   icon: <ETHLogo />,
   // },
-  // {
-  //   key: "0x4",
-  //   value: "Rinkeby Testnet",
-  //   icon: <ETHLogo />,
-  // },
+  {
+    key: "0x4",
+    value: "Rinkeby Testnet",
+    icon: <ETHLogo />,
+  },
   // {
   //   key: "0x2a",
   //   value: "Kovan Testnet",

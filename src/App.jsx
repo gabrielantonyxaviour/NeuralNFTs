@@ -7,6 +7,8 @@ import Chains from "components/Chains";
 import Home from "components/Home";
 import Profile from "components/Profile";
 import NFT from "components/NFT";
+import Error404 from "components/Error404";
+
 import Dashboard from "components/Dashboard";
 
 import ERC20Balance from "components/ERC20Balance";
@@ -35,7 +37,10 @@ const App = ({ isServerInfo }) => {
   }, [isAuthenticated, isWeb3Enabled]);
 
   return (
-    <Layout style={{ minHeight: "100vh" }} className="bg-black text-white">
+    <Layout
+      style={{ minHeight: "100vh" }}
+      className="bg-black text-white overflow-hidden "
+    >
       <Router>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container-fluid">
@@ -101,8 +106,12 @@ const App = ({ isServerInfo }) => {
               <>Please login using the "Authenticate" button</>
             </Route>
 
-            <Route path="/">
+            <Route exact path="/">
               <Home />
+            </Route>
+
+            <Route path="*">
+              <Error404 />
             </Route>
           </Switch>
         </div>

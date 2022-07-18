@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
+import axios from "axios";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import { motion, AnimatePresence } from "framer-motion";
 import ABI from "../contracts/bayc_abi.json";
@@ -21,7 +22,7 @@ function Message() {
   const { runContractFunction, contractResponse, error, isRunning, isLoading } =
     useWeb3Contract({
       abi: ABI,
-      contractAddress: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+      contractAddress: "0x17517F552d14E3ae1b2a8005f594D7916CE6466d",
       functionName: "observe",
       params: {
         secondsAgos: [0, 10],
@@ -74,6 +75,28 @@ function Message() {
     );
   }
 
+  useEffect(() => {
+    axios
+      .request({
+        method: "GET",
+        url: "https://api.nftport.xyz/v0/nfts/0x17517F552d14E3ae1b2a8005f594D7916CE6466d",
+        params: {
+          chain: "ethereum",
+          contract: "0x17517F552d14E3ae1b2a8005f594D7916CE6466d",
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "ae7af491-c4de-4de0-b08a-c4a938fda265",
+        },
+      })
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -82,7 +105,7 @@ function Message() {
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 2.5 }}
       >
-        <div className="text-white mt-5 text-end">
+        <div className="text-white mt-5 text-end ">
           <h1 className="fw-bold mb-5 text-white">Dashboard</h1>
           <div className="mt-4 justify-content-end">
             <h3 className="fw-bold text-white">Listings</h3>
