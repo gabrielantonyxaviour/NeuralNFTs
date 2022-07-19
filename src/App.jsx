@@ -45,7 +45,7 @@ const App = ({ isServerInfo }) => {
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container-fluid">
             <Link className="btn navbar-brand fw-bold bg-warning" to="/">
-              NeuralNFTs
+              🧠 NeuralNFTs
             </Link>
             <button
               className="navbar-toggler"
