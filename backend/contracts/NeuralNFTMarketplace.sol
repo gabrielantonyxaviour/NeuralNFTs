@@ -65,7 +65,11 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
         uint256 indexed tokenId
     );
 
-    event ApprovedNftAddress(address indexed owner, address indexed nftAddress);
+    event ApprovedNftAddress(
+        address indexed owner,
+        address indexed nftAddress,
+        string abiHash
+    );
 
     /// @notice Modifiers pre-defined for cleaner code
     modifier notListed(
@@ -207,13 +211,18 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
         uint256 newPrice
     )
         external
+        payable
         nonReentrant
         isOwner(nftAddress, tokenId, msg.sender)
         isListed(nftAddress, tokenId)
     {
+        if (msg.value < LIST_FEE) {
+            revert NeuralNFTMarketplace__InsufficientFunds();
+        }
         if (newPrice <= 0) {
             revert NeuralNFTMarketplace__PriceMustBeAboveZero();
         }
+        s_earnings[i_owner] += msg.value;
         s_listings[nftAddress][tokenId].price = newPrice;
         emit ItemListed(msg.sender, nftAddress, tokenId, newPrice);
     }
@@ -238,20 +247,18 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
      * @notice Approves an NFT address to the user who approves it first.. It doesn't give royalties to the user it should be added in the NFT contract.
      * @param nftAddress The address of the contract of the NFT
      */
-    function approveNftAddress(address nftAddress) public {
+    function approveNftAddress(address nftAddress, string memory nftAbiHash)
+        public
+    {
         if (s_approvedForMarketplace[nftAddress]) {
             revert NeuralNFTMarketplace__AlreadyApproved();
         }
 
         s_approvedForMarketplace[nftAddress] = true;
 
-        emit ApprovedNftAddress(msg.sender, nftAddress);
+        emit ApprovedNftAddress(msg.sender, nftAddress, nftAbiHash);
     }
 
-    /**
-     * @notice Returns the details of a listing in the marketplace
-     * @return The Listing structure consisting of the price and the seller address
-     */
     function getListing(address nftAddress, uint256 tokenId)
         external
         view
@@ -260,15 +267,19 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
         return s_listings[nftAddress][tokenId];
     }
 
-    /**
-     * @notice Returns the total earnings made by the user in the marketplace
-     * @return The total earnings made by the user in the marketplace
-     */
     function getEarnings(address seller) external view returns (uint256) {
         return s_earnings[seller];
     }
 
     function isApproved(address nftAddress) external view returns (bool) {
         return s_approvedForMarketplace[nftAddress];
+    }
+
+    function getListFee() external pure returns (uint256) {
+        return LIST_FEE;
+    }
+
+    function getPlatformFee() external pure returns (uint256) {
+        return PLATFORM_FEE;
     }
 }
