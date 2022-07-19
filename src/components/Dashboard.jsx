@@ -4,6 +4,40 @@ import axios from "axios";
 import { useMoralis } from "react-moralis";
 import { motion, AnimatePresence } from "framer-motion";
 
+export function ProjectLoader() {
+  function LoaderCard() {
+    return (
+      <div className="card mx-3 card-body p-shadow bg-black rounded">
+        <div className="d-flex align-items-center justify-content-center">
+          <div className="spinner-grow text-secondary mx-2" role="status"></div>{" "}
+          <div className="spinner-grow text-secondary mx-2" role="status"></div>
+          <div className="spinner-grow text-secondary mx-2" role="status"></div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className="mt-5 text-primary d-flex align-items-center justify-content-end text-right"
+    >
+      <Marquee
+        className="projects-marquee"
+        direction="right"
+        speed={120}
+        pauseOnHover
+        gradient
+        gradientWidth={0}
+        gradientColor={[31, 31, 31]}
+      >
+        {<LoaderCard />} <LoaderCard /> <LoaderCard />
+        <LoaderCard /> <LoaderCard /> <LoaderCard />
+      </Marquee>
+    </motion.div>
+  );
+}
+
 function Message() {
   const { isAuthenticated, user } = useMoralis(); // eslint-disable-line
 
@@ -91,7 +125,6 @@ function Message() {
               },
             )
             .then((data) => {
-              console.log(data.data.nft);
               tokens_data.push(data.data.nft);
             })
             .catch(async (err) => {
@@ -128,22 +161,7 @@ function Message() {
             ↩️ Select a NeuralNFT🧠 to use the model
           </h5>
 
-          {loading && (
-            <div className="mt-5">
-              <div className="progress">
-                <div
-                  className="text-end progress-bar progress-bar-striped bg-dark progress-bar-animated"
-                  role="progressbar"
-                  ariaValuenow="75"
-                  ariaValuemin="0"
-                  ariaValuemax="100"
-                  style={{ width: "100%" }}
-                >
-                  Loading...
-                </div>
-              </div>
-            </div>
-          )}
+          {loading && <ProjectLoader />}
           {!loading && (
             <motion.div
               // style={{ clipPath: "inset( -100vw 0 -100vw  -100vw)" }}
