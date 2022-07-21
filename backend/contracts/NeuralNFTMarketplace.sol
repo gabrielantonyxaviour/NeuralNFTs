@@ -259,6 +259,7 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
         emit ApprovedNftAddress(msg.sender, nftAddress, nftAbiHash);
     }
 
+    /// @notice Getter functions
     function getListing(address nftAddress, uint256 tokenId)
         external
         view
