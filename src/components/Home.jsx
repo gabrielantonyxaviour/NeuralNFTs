@@ -22,27 +22,37 @@ function Home() {
         transition={{ duration: 2.5 }}
         className="container mt-5"
       >
-        <div className="d-block d-md-flex justify-content-start align-items-center ">
-          <motion.div
-            className="me-4"
-            animate={{ x: [1, -15, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-          >
+        <div className="d-block text-center align-items-center ">
+          <div className="mb-5" style={{ zIndex: "0" }}>
             <img
-              height={650}
-              src="https://media3.giphy.com/media/XECtl1Fa2k8IKU2987/giphy.gif?cid=ecf05e47wxgnz6wr2l56xxigi0c3nfday9ejv8x934q19xn9&rid=giphy.gif&ct=s"
+              style={{
+                height: "50vh",
+                marginTop: "-120px",
+                filter: "hue-rotate(10deg)",
+                opacity: "0.5",
+              }}
+              src="https://media3.giphy.com/media/rKyQHomirHn1U4X6uM/giphy.gif?cid=ecf05e47dsskp0rxa0ajeqcprg4lys48gcoeg1tmv0jq0866&rid=giphy.gif&ct=s"
               alt=""
             />
-          </motion.div>
-          <div className="text-white text-start col-12 col-md-9 ps-3">
-            <h1 className="fw-bold text-white " style={{ fontSize: "5em" }}>
-              NeuralNFTs
+          </div>
+          <div
+            style={{ marginTop: "-50px", zIndex: "50" }}
+            className="text-white text-center "
+          >
+            <h1
+              className="fw-bold text-white "
+              style={{
+                fontSize: "6em",
+                fontFamily: "monospace",
+              }}
+            >
+              Neural<span className="text-warning">NFTs</span>
             </h1>
 
-            <h2 className="mt-3 pb-2 text-white w-75">
+            <h2 className="mt-3 pb-2 text-white ">
               Giving the sixth sense to NFTs
             </h2>
-            <h5 className="text-secondary fw-light w-75">
+            <h5 className="text-secondary fw-light px-5 mx-5">
               We are planning to build a ML model NFT marketplace where ML
               artists can showcase their talents by creating interactive NFTs.
               This would be really helpful for people who are starting out in ML
@@ -54,15 +64,22 @@ function Home() {
           </div>
         </div>
 
-        <h5 className="py-5 text-end mt-5 mb-3 text-white">Powered by</h5>
-        <div className="d-flex justify-content-end align-items-center mb-5 pb-5">
+        <h5 className="py-5 text-center mt-5 mb-3 text-secondary">
+          POWERED BY
+        </h5>
+        <div className="d-flex justify-content-center align-items-center mb-5 pb-5">
           <img
             className="mx-2"
             height="100px"
             src="https://cryptologos.cc/logos/polygon-matic-logo.png"
             alt="Polygon"
           />
-
+          <img
+            className="mx-2"
+            height="100px"
+            src="https://pbs.twimg.com/profile_images/1432723747874684934/N7bJoAi6_400x400.jpg"
+            alt="XMTP"
+          />
           <img
             className="mx-2"
             height="100px"
@@ -73,7 +90,37 @@ function Home() {
             className="mx-2"
             height="100px"
             src="https://images.ctfassets.net/q5ulk4bp65r7/1rFQCqoq8hipvVJSKdU3fQ/21ab733af7a8ab404e29b873ffb28348/coinbase-icon2.svg"
-            alt=""
+            alt="Coinbase"
+          />
+          <img
+            className="mx-2"
+            height="100px"
+            src="https://cryptologos.cc/logos/the-graph-grt-logo.png"
+            alt="TheGraph"
+          />
+          <img
+            className="mx-2"
+            height="100px"
+            src="https://assets.website-files.com/609ab8eae6dd417c085cc925/609b2ba76d637745d781160e_logo-ceramic.png"
+            alt="Ceramic"
+          />
+          <img
+            className="mx-2"
+            height="100px"
+            src="https://pbs.twimg.com/profile_images/570059057197625344/h4Bvj_8p_400x400.png"
+            alt="Filecoin"
+          />
+          <img
+            className="mx-2"
+            height="100px"
+            src="https://docs.spheron.network/img/favicon.ico"
+            alt="Spheron"
+          />{" "}
+          <img
+            className="mx-2"
+            height="100px"
+            src="https://www.programmableweb.com/sites/default/files/nftport-logo.jpg"
+            alt="NFTport"
           />
         </div>
 
@@ -81,12 +128,12 @@ function Home() {
           <div className="col-md-4 mx-md-5">
             <img
               src="https://media3.giphy.com/media/QsOq3W7wCoa0sC2QEN/giphy.gif?cid=ecf05e47vw37g2a9n4oymaagriqb2ongpm9kz137qwk47b3l&rid=giphy.gif&ct=s"
-              height={400}
+              style={{ width: "500px" }}
               alt=""
               srcSet=""
             />
           </div>
-          <div className="col-md-7 mt-5 mt-md-0">
+          <div className="col-md-7 mt-5 mt-md-0 text-end">
             <h1 className="fw-bold text-white w-75">How to use?</h1>
             <h4 className="text-secondary fw-light w-75">
               A person can use the NeuralNFTs platform to run a ML model which

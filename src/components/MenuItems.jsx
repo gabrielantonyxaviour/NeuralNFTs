@@ -47,82 +47,11 @@ function MenuItems() {
                 Wallet
               </NavLink>
             </li>
-            <li className="bg-black btn badge btn-sm nav-item mx-2 my-2 my-md-0">
-              <NavLink
-                className="nav-link active text-white"
-                to="/erc20transfers"
-              >
-                Transfers
-              </NavLink>
-            </li>
           </React.Fragment>
         )}
       </ul>
     );
   }
-
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // function OldMenu() {
-  //   return (
-  //     <Menu
-  //       mode="horizontal"
-  //       className="bg-dark"
-  //       style={{
-  //         display: "flex",
-  //         fontSize: "17px",
-  //         fontWeight: "500",
-  //         width: "100%",
-  //       }}
-  //       defaultSelectedKeys={[pathname]}
-  //     >
-  //       <Menu.Item key="/wallet">
-  //         <NavLink
-  //           className="text-white btn"
-  //           style={{ background: "#ffc107" }}
-  //           to="/wallet"
-  //         >
-  //           Wallet
-  //         </NavLink>
-  //       </Menu.Item>
-  //       <Menu.Item key="/erc20balance">
-  //         <NavLink
-  //           className="text-white btn"
-  //           style={{ background: "#ffc107" }}
-  //           to="/erc20balance"
-  //         >
-  //           Balances
-  //         </NavLink>
-  //       </Menu.Item>
-  //       <Menu.Item key="/erc20transfers">
-  //         <NavLink
-  //           className="text-white btn"
-  //           style={{ background: "#ffc107" }}
-  //           to="/erc20transfers"
-  //         >
-  //           Transfers
-  //         </NavLink>
-  //       </Menu.Item>
-  //       <Menu.Item key="/nftBalance">
-  //         <NavLink
-  //           className="text-white btn"
-  //           style={{ background: "#ffc107" }}
-  //           to="/nftBalance"
-  //         >
-  //           NFTs
-  //         </NavLink>
-  //       </Menu.Item>
-  //       <Menu.Item key="/contract">
-  //         <NavLink
-  //           className="text-white btn"
-  //           style={{ background: "#ffc107" }}
-  //           to="/contract"
-  //         >
-  //           Contract
-  //         </NavLink>
-  //       </Menu.Item>
-  //     </Menu>
-  //   );
-  // }
 
   return <Items />;
 }

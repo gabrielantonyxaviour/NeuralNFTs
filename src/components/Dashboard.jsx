@@ -3,48 +3,27 @@ import Marquee from "react-fast-marquee";
 import axios from "axios";
 import { useMoralis } from "react-moralis";
 import { motion, AnimatePresence } from "framer-motion";
+import { useQuery, gql } from "@apollo/client";
 
-export function ProjectLoader() {
-  function LoaderCard() {
-    return (
-      <div className="card mx-3 card-body p-shadow bg-black rounded">
-        <div className="d-flex align-items-center justify-content-center">
-          <div className="spinner-grow text-secondary mx-2" role="status"></div>{" "}
-          <div className="spinner-grow text-secondary mx-2" role="status"></div>
-          <div className="spinner-grow text-secondary mx-2" role="status"></div>
-        </div>
-      </div>
-    );
+const GET_ACTIVE_ITEMS = gql`
+  {
+    activeItems(first: 10, where: { buyer: "0x00000000" }) {
+      id
+      buyer
+      seller
+      nftAddress
+      tokenId
+      price
+    }
   }
+`;
 
-  return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      className="mt-5 text-primary d-flex align-items-center justify-content-end text-right"
-    >
-      <Marquee
-        className="projects-marquee"
-        direction="right"
-        speed={120}
-        pauseOnHover
-        gradient
-        gradientWidth={0}
-        gradientColor={[31, 31, 31]}
-      >
-        {<LoaderCard />} <LoaderCard /> <LoaderCard />
-        <LoaderCard /> <LoaderCard /> <LoaderCard />
-      </Marquee>
-    </motion.div>
-  );
-}
-
-function Message() {
+function Dashboard() {
   const { isAuthenticated, user } = useMoralis(); // eslint-disable-line
-
+  const { loading, error, data } = useQuery(GET_ACTIVE_ITEMS);
   const contract_address = "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d";
 
   const [nfts, setNfts] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   function GithubCard(props) {
     return (
@@ -96,18 +75,11 @@ function Message() {
   }
 
   useEffect(() => {
-    axios
-      .get(`https://api.nftport.xyz/v0/nfts/${contract_address}`, {
-        params: {
-          chain: "ethereum",
-        },
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "ae7af491-c4de-4de0-b08a-c4a938fda265",
-        },
-      })
-      .then(async function (response) {
-        let tokens = response.data.nfts.slice(0, 10);
+    if (error) return console.log(error);
+
+    if (!loading) {
+      (async () => {
+        let tokens = data.slice(0, 10);
         let tokens_data = [];
 
         for (let i = 0; i < tokens.length; i++) {
@@ -136,12 +108,9 @@ function Message() {
             });
         }
         setNfts(tokens_data);
-        setLoading(false);
         console.log(tokens_data);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+      })();
+    }
   }, []);
 
   return (
@@ -195,5 +164,37 @@ function Message() {
     </AnimatePresence>
   );
 }
+export function ProjectLoader() {
+  function LoaderCard() {
+    return (
+      <div className="card mx-3 card-body p-shadow bg-black rounded">
+        <div className="d-flex align-items-center justify-content-center">
+          <div className="spinner-grow text-secondary mx-2" role="status"></div>{" "}
+          <div className="spinner-grow text-secondary mx-2" role="status"></div>
+          <div className="spinner-grow text-secondary mx-2" role="status"></div>
+        </div>
+      </div>
+    );
+  }
 
-export default Message;
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className="mt-5 text-primary d-flex align-items-center justify-content-end text-right"
+    >
+      <Marquee
+        className="projects-marquee"
+        direction="right"
+        speed={120}
+        pauseOnHover
+        gradient
+        gradientWidth={0}
+        gradientColor={[31, 31, 31]}
+      >
+        {<LoaderCard />} <LoaderCard /> <LoaderCard />
+        <LoaderCard /> <LoaderCard /> <LoaderCard />
+      </Marquee>
+    </motion.div>
+  );
+}
+export default Dashboard;

@@ -6,10 +6,17 @@ import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import QuickStart from "components/QuickStart";
 
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+
 /** Get your free Moralis Account https://moralis.io/ */
 
 const APP_ID = process.env.REACT_APP_MORALIS_APPLICATION_ID;
 const SERVER_URL = process.env.REACT_APP_MORALIS_SERVER_URL;
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: process.env.REACT_APP_PUBLIC_SUBGRAPH_URL,
+});
 
 const Application = () => {
   const isServerInfo = APP_ID && SERVER_URL ? true : false;
@@ -21,7 +28,9 @@ const Application = () => {
   if (isServerInfo)
     return (
       <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
-        <App isServerInfo />
+        <ApolloProvider client={client}>
+          <App isServerInfo />
+        </ApolloProvider>
       </MoralisProvider>
     );
   else {

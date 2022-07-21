@@ -42,7 +42,10 @@ const App = ({ isServerInfo }) => {
       className="bg-black text-white overflow-hidden "
     >
       <Router>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav
+          style={{ zIndex: "1", background: "#ffffff" }}
+          className="navbar navbar-expand-lg navbar-light mb-5 mx-5 p-4 rounded"
+        >
           <div className="container-fluid">
             <Link className="btn navbar-brand fw-bold bg-warning" to="/">
               🧠 NeuralNFTs
@@ -116,17 +119,14 @@ const App = ({ isServerInfo }) => {
           </Switch>
         </div>
       </Router>
-      <Footer
-        className="bg-black text-white mt-5 px-4 container"
-        style={{ textAlign: "right" }}
-      >
+      <Footer className="bg-black text-white mt-5 px-4 container text-center">
         <p>
           Made with ❤️ <br /> by{" "}
           <a
             href="https://twitter.com/FabianFerno"
             className="fw-bold text-white text-decoration-none"
           >
-            Team NeuralNFTs
+            @fabianferno & @gabrielxavier
           </a>
         </p>
       </Footer>
