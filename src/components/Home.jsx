@@ -22,7 +22,7 @@ function Home() {
         transition={{ duration: 2.5 }}
         className="container mt-5"
       >
-        <div className="d-block text-center align-items-center ">
+        <div className="pb-4 d-block text-center align-items-center ">
           <div className="mb-5" style={{ zIndex: "0" }}>
             <img
               style={{
@@ -42,6 +42,7 @@ function Home() {
             <h1
               className="fw-bold text-white "
               style={{
+                marginBottom: "10px",
                 fontSize: "6em",
                 fontFamily: "monospace",
               }}
@@ -49,7 +50,7 @@ function Home() {
               Neural<span className="text-warning">NFTs</span>
             </h1>
 
-            <h2 className="mt-3 pb-2 text-white ">
+            <h2 className=" pb-2 text-white ">
               Giving the sixth sense to NFTs
             </h2>
             <h5 className="text-secondary fw-light px-5 mx-5">
@@ -142,35 +143,6 @@ function Home() {
             </h4>
           </div>
         </div>
-
-        {/* <div className="d-md-flex align-items-center justify-content-center my-5 container">
-          <div className="col-md-6 mt-5 mt-md-0 text-end">
-            <h1 className="fw-bold text-white">
-              Towards Decentalized Security
-            </h1>
-            <h4 className="text-secondary fw-light">
-              Simply, a device is first minted (registered) on the blockchain
-              similar to the NFTs on their smart contract. The mint occurs by
-              creating the NeuralNFTs hash based on firmware, metadata, owner
-              address and the device identifier. The next time the device tries
-              to authenticate using the NeuralNFTs platform, this NeuralNFTs
-              hash is compared with the on-chain data and allows further access
-              to the IPFS API to transact the sensor data. The admin can use the
-              front end dApp to mint, view devices and look at the sensor data
-              collected by the NeuralNFTs platform. This is done completely
-              decentralized from end to end, meaning there’s no single point of
-              failure and hence byzantine fault tolerance is achieved.
-            </h4>
-          </div>
-          <div className="col-md-5 mx-md-5">
-            <img
-              src="https://media1.giphy.com/media/VIWbOd3V8yVap4VQLt/giphy.gif?cid=ecf05e47el66l7t6vr83ibahm737l9kp0je8wvyrbb852kl3&rid=giphy.gif&ct=s"
-              height={300}
-              alt=""
-              srcSet=""
-            />
-          </div>
-        </div> */}
       </motion.div>
     </AnimatePresence>
   );

@@ -132,10 +132,7 @@ function Dashboard() {
 
           {loading && <ProjectLoader />}
           {!loading && (
-            <motion.div
-              // style={{ clipPath: "inset( -100vw 0 -100vw  -100vw)" }}
-              className="mt-md-1 pt-md-2 pt-3 mt-3"
-            >
+            <motion.div className="mt-md-1 pt-md-2 pt-3 mt-3">
               <Marquee
                 className="projects-marquee"
                 direction="right"

@@ -7,6 +7,7 @@ import Chains from "components/Chains";
 import Home from "components/Home";
 import Profile from "components/Profile";
 import NFT from "components/NFT";
+import Support from "components/Support";
 import Error404 from "components/Error404";
 
 import Dashboard from "components/Dashboard";
@@ -42,37 +43,39 @@ const App = ({ isServerInfo }) => {
       className="bg-black text-white overflow-hidden "
     >
       <Router>
-        <nav
-          style={{ zIndex: "1", background: "#ffffff" }}
-          className="navbar navbar-expand-lg navbar-light mb-5 mx-5 p-4 rounded"
-        >
-          <div className="container-fluid">
-            <Link className="btn navbar-brand fw-bold bg-warning" to="/">
-              🧠 NeuralNFTs
-            </Link>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon" />
-            </button>
-            <div
-              className="collapse navbar-collapse"
-              id="navbarSupportedContent"
-            >
-              <MenuItems />
+        <div className="container">
+          <nav
+            style={{ zIndex: "1", background: "#ffffff" }}
+            className=" navbar navbar-expand-lg navbar-light mb-5 p-4 rounded"
+          >
+            <div className="container d-flex justify-content-center">
+              <Link className="btn navbar-brand fw-bold bg-warning" to="/">
+                🧠 NeuralNFTs
+              </Link>
+              <button
+                className="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span className="navbar-toggler-icon" />
+              </button>
+              <div
+                className="collapse navbar-collapse"
+                id="navbarSupportedContent"
+              >
+                <MenuItems />
 
-              <Chains />
-              <NativeBalance />
-              <Account />
+                <Chains />
+                <NativeBalance />
+                <Account />
+              </div>
             </div>
-          </div>
-        </nav>
+          </nav>
+        </div>
 
         <div className="container">
           <Switch>
@@ -87,6 +90,9 @@ const App = ({ isServerInfo }) => {
             </Route>
             <Route path="/dashboard">
               <Dashboard />
+            </Route>
+            <Route path="/support">
+              <Support />
             </Route>
 
             <Route path="/wallet">

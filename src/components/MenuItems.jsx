@@ -43,8 +43,8 @@ function MenuItems() {
             </li>
 
             <li className="bg-black btn badge btn-sm nav-item mx-2 my-2 my-md-0">
-              <NavLink className="nav-link active text-white" to="/wallet">
-                Wallet
+              <NavLink className="nav-link active text-white" to="/support">
+                Support
               </NavLink>
             </li>
           </React.Fragment>
