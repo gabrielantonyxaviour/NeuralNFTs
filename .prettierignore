@@ -1,0 +1,13 @@
+node_modules
+backend/artifacts
+backend/cache
+backend/coverage*
+backend/gasReporterOutput.json
+package.json
+backend/img
+.env
+.*
+README.md
+backend/coverage.json
+backend/deployments
+.next
