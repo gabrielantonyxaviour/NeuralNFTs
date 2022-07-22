@@ -9,11 +9,7 @@ error NeuralNFTMarketplace__NotApprovedForMarketplace();
 error NeuralNFTMarketplace__AlreadyListed(address nftAddress, uint256 tokenId);
 error NeuralNFTMarketplace__NotOwner();
 error NeuralNFTMarketplace__NotListed(address nftAddress, uint256 tokenId);
-error NeuralNFTMarketplace__PriceNotMet(
-    address nftAddress,
-    uint256 tokenId,
-    uint256 price
-);
+error NeuralNFTMarketplace__PriceNotMet(address nftAddress, uint256 tokenId, uint256 price);
 error NeuralNFTMarketplace__NoProceeds();
 error NeuralNFTMarketplace__TransferFailed();
 error NeuralNFTMarketplace__InsufficientFunds();
@@ -34,7 +30,7 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
 
     // Constant variables
     uint256 public constant PLATFORM_FEE = 2;
-    uint256 public constant LIST_FEE = 5 ether;
+    uint256 public constant LIST_FEE = 0.001 ether;
 
     // Immutable variable
     address private immutable i_owner;
@@ -65,11 +61,7 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
         uint256 indexed tokenId
     );
 
-    event ApprovedNftAddress(
-        address indexed owner,
-        address indexed nftAddress,
-        string abiHash
-    );
+    event ApprovedNftAddress(address indexed owner, address indexed nftAddress);
 
     /// @notice Modifiers pre-defined for cleaner code
     modifier notListed(
@@ -163,11 +155,7 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
     {
         Listing memory listing = s_listings[nftAddress][tokenId];
         if (msg.value < listing.price) {
-            revert NeuralNFTMarketplace__PriceNotMet(
-                address(this),
-                tokenId,
-                listing.price
-            );
+            revert NeuralNFTMarketplace__PriceNotMet(address(this), tokenId, listing.price);
         }
         s_earnings[listing.seller] =
             s_earnings[listing.seller] +
@@ -176,11 +164,7 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
         s_earnings[i_owner] = (msg.value * PLATFORM_FEE) / 100;
         delete (s_listings[nftAddress][tokenId]);
 
-        IERC721(nftAddress).safeTransferFrom(
-            listing.seller,
-            msg.sender,
-            tokenId
-        );
+        IERC721(nftAddress).safeTransferFrom(listing.seller, msg.sender, tokenId);
         emit ItemBought(msg.sender, nftAddress, tokenId, listing.price);
     }
 
@@ -244,19 +228,18 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
     }
 
     /**
-     * @notice Approves an NFT address to the user who approves it first.. It doesn't give royalties to the user it should be added in the NFT contract.
+     * @notice Showcases all the NFTs in this nftAddress as the NFT created by the caller.
+     * It doesn't give royalties to the user but helps to provide dynamic UI.
      * @param nftAddress The address of the contract of the NFT
      */
-    function approveNftAddress(address nftAddress, string memory nftAbiHash)
-        public
-    {
+    function approveNftAddress(address nftAddress) public {
         if (s_approvedForMarketplace[nftAddress]) {
             revert NeuralNFTMarketplace__AlreadyApproved();
         }
 
         s_approvedForMarketplace[nftAddress] = true;
 
-        emit ApprovedNftAddress(msg.sender, nftAddress, nftAbiHash);
+        emit ApprovedNftAddress(msg.sender, nftAddress);
     }
 
     /// @notice Getter functions

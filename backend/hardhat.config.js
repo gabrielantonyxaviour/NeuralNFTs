@@ -6,7 +6,6 @@ require("hardhat-gas-reporter")
 require("hardhat-contract-sizer")
 require("dotenv").config()
 
-
 const RINKEBY_RPC_URL =
     process.env.RINKEBY_RPC_URL || "https://eth-rinkeby.alchemyapi.io/v2/your-api-key"
 const POLYGON_MAINNET_RPC_URL =
@@ -29,13 +28,13 @@ module.exports = {
             chainId: 31337,
         },
         rinkeby: {
-            url: MUMBAI_RPC_URL,
+            url: RINKEBY_RPC_URL,
             accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
             saveDeployments: true,
             chainId: 4,
         },
         mumbai: {
-            url: RINKEBY_RPC_URL,
+            url: MUMBAI_RPC_URL,
             accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
             saveDeployments: true,
             chainId: 80001,
@@ -53,7 +52,18 @@ module.exports = {
             rinkeby: ETHERSCAN_API_KEY,
             kovan: ETHERSCAN_API_KEY,
             polygon: POLYGONSCAN_API_KEY,
+            mumbai: POLYGONSCAN_API_KEY,
         },
+        customChains: [
+            {
+                network: "mumbai",
+                chainId: 80001,
+                urls: {
+                    apiURL: "https://api-testnet.polygonscan.com/api",
+                    browserURL: "https://mumbai.polygonscan.com",
+                },
+            },
+        ],
     },
     gasReporter: {
         enabled: REPORT_GAS,
