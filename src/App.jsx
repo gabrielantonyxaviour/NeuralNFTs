@@ -45,8 +45,11 @@ const App = ({ isServerInfo }) => {
       <Router>
         <div className="container">
           <nav
-            style={{ zIndex: "1", background: "#ffffff" }}
-            className=" navbar navbar-expand-lg navbar-light mb-5 p-4 rounded"
+            style={{
+              zIndex: "1",
+              background: "linear-gradient(#ffc10788, #000000)",
+            }}
+            className="navbar navbar-expand-lg navbar-light mb-5 p-4 rounded"
           >
             <div className="container d-flex justify-content-center">
               <Link className="btn navbar-brand fw-bold bg-warning" to="/">
@@ -125,14 +128,14 @@ const App = ({ isServerInfo }) => {
           </Switch>
         </div>
       </Router>
-      <Footer className="bg-black text-white mt-5 px-4 container text-center">
+      <Footer className="bg-black text-white mt-5 px-4 container text-end">
         <p>
           Made with ❤️ <br /> by{" "}
           <a
-            href="https://twitter.com/FabianFerno"
+            href="https://twitter.com/gabrielaxyeth"
             className="fw-bold text-white text-decoration-none"
           >
-            @fabianferno & @gabrielxavier
+            @fabianferno & @gabrielaxy
           </a>
         </p>
       </Footer>

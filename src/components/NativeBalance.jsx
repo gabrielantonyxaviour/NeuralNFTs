@@ -8,7 +8,7 @@ function NativeBalance(props) {
 
   return (
     <div
-      className="mx-3 fw-bold"
+      className="mx-3 fw-bold text-white"
       style={{
         textAlign: "center",
         whiteSpace: "nowrap",

@@ -27,16 +27,15 @@ function Home() {
             <img
               style={{
                 height: "50vh",
-                marginTop: "-120px",
-                filter: "hue-rotate(10deg)",
-                opacity: "0.5",
+                marginTop: "-100px",
+                filter: "hue-rotate(10deg) brightness(1.2)",
               }}
-              src="https://media3.giphy.com/media/rKyQHomirHn1U4X6uM/giphy.gif?cid=ecf05e47dsskp0rxa0ajeqcprg4lys48gcoeg1tmv0jq0866&rid=giphy.gif&ct=s"
+              src="https://media1.giphy.com/media/ibXW0RPKgrtHgxg8gV/giphy.gif?cid=ecf05e47x55q1uo8owlwh9xqlrpd8qw8nw6drfzz9yc0h769&rid=giphy.gif&ct=s"
               alt=""
             />
           </div>
           <div
-            style={{ marginTop: "-50px", zIndex: "50" }}
+            style={{ marginTop: "-20px", zIndex: "50" }}
             className="text-white text-center "
           >
             <h1
@@ -53,14 +52,12 @@ function Home() {
             <h2 className=" pb-2 text-white ">
               Giving the sixth sense to NFTs
             </h2>
-            <h5 className="text-secondary fw-light px-5 mx-5">
+            <h5 className="text-secondary fw-light">
               We are planning to build a ML model NFT marketplace where ML
               artists can showcase their talents by creating interactive NFTs.
               This would be really helpful for people who are starting out in ML
               and also for the veterans to join together as a community and
-              create NFTs. People can also buy, sell and auction the NFTs in the
-              marketplace. Giving the sixth sense to NFTs by creating an
-              interactive ML model marketplace with NFT analytics.
+              create NFTs.
             </h5>
           </div>
         </div>
@@ -81,23 +78,29 @@ function Home() {
             src="https://pbs.twimg.com/profile_images/1432723747874684934/N7bJoAi6_400x400.jpg"
             alt="XMTP"
           />
-          <img
+          {/* <img
             className="mx-2"
             height="100px"
             src="https://seeklogo.com/images/W/walletconnect-logo-EE83B50C97-seeklogo.com.png"
             alt="Wallet Connect"
-          />
-          <img
+          /> */}
+          {/* <img
             className="mx-2"
             height="100px"
             src="https://images.ctfassets.net/q5ulk4bp65r7/1rFQCqoq8hipvVJSKdU3fQ/21ab733af7a8ab404e29b873ffb28348/coinbase-icon2.svg"
             alt="Coinbase"
-          />
+          /> */}
           <img
             className="mx-2"
             height="100px"
             src="https://cryptologos.cc/logos/the-graph-grt-logo.png"
             alt="TheGraph"
+          />
+          <img
+            className="mx-2"
+            height="100px"
+            src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/siywpav2xzmfukum8jtc"
+            alt="Covalent"
           />
           <img
             className="mx-2"

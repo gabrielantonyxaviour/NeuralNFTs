@@ -8,8 +8,6 @@ import { DID } from "dids";
 import { IDX } from "@ceramicstudio/idx";
 import { ProjectLoader } from "./Dashboard";
 
-const endpoint = "https://ceramic-clay.3boxlabs.com";
-
 function Profile() {
   const { isAuthenticated, user } = useMoralis();
   const [name, setName] = useState("");
@@ -30,28 +28,40 @@ function Profile() {
 
   async function readProfile() {
     const [address] = await connect();
-    const ceramic = new CeramicClient(endpoint);
+    const ceramic = new CeramicClient("https://ceramic-clay.3boxlabs.com");
     const idx = new IDX({ ceramic });
 
     try {
       const data = await idx.get("basicProfile", `${address}@eip155:1`);
-      console.log("data: ", data);
+      console.log("data: ", data, "address: ", address);
       if (data.name) setName(data.name);
       if (data.avatarImgURL) setAvatarImgURL(data.avatarImgURL);
       if (data.coverImageURL) setCoverImageURL(data.coverImageURL);
       if (data.description) setDescription(data.description);
       if (data.externalURL) setExternalURL(data.externalURL);
       if (data.country) setCountry(data.country);
+      setLoaded(true);
     } catch (error) {
       console.log("error: ", error);
-      setLoaded(true);
     }
   }
+
+  const fabian = {
+    name: "Fabian Ferno",
+    avatarImgURL:
+      "https://64.media.tumblr.com/73354947f7e524a5cdadaec2ef77fc41/709a1397f7446f1d-65/s400x600/16e5a7bae6da4bb72ffe3b180de9b3b90f417bb7.png",
+    coverImageURL:
+      "https://images.unsplash.com/photo-1586672806791-3a67d24186c0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y292ZXIlMjBhcnR8ZW58MHx8MHx8&w=1350&q=80",
+    description:
+      "Co-founder at @nftconomy | Fabi loves technology, the Halo games & the star-wars franchise - also prequels | Buidling #web3 analytics",
+    externalURL: "https:/www.github.com/fabianferno",
+    country: "Argentina",
+  };
 
   async function updateProfile() {
     try {
       const [address] = await connect();
-      const ceramic = new CeramicClient(endpoint);
+      const ceramic = new CeramicClient("https://ceramic-clay.3boxlabs.com");
       const threeIdConnect = new ThreeIdConnect();
       const provider = new EthereumAuthProvider(window.ethereum, address);
 
@@ -69,14 +79,7 @@ function Profile() {
 
       const idx = new IDX({ ceramic });
 
-      await idx.set("basicProfile", {
-        name,
-        avatarImgURL,
-        coverImageURL,
-        description,
-        externalURL,
-        country,
-      });
+      await idx.set("basicProfile", fabian);
 
       console.log("Profile updated!");
     } catch (e) {
@@ -84,22 +87,9 @@ function Profile() {
     }
   }
 
-  // const data = {
-  //   name: "Fabian Ferno",
-  //   avatarImgURL:
-  //     "https://64.media.tumblr.com/73354947f7e524a5cdadaec2ef77fc41/709a1397f7446f1d-65/s400x600/16e5a7bae6da4bb72ffe3b180de9b3b90f417bb7.png",
-  //   coverImageURL:
-  //     "https://images.unsplash.com/photo-1586672806791-3a67d24186c0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y292ZXIlMjBhcnR8ZW58MHx8MHx8&w=1350&q=80",
-  //   description:
-  //     "Co-founder at @nftconomy | Fabi loves technology, the Halo games & the star-wars franchise - also prequels | Buidling #web3 analytics",
-  //   externalURL: "https:/www.github.com/fabianferno",
-  //   country: "Argentina",
-  // };
-
   useEffect(() => {
     if (isAuthenticated) {
       // add your logic here
-      console.dir(user?.attributes.ethAddress);
       readProfile();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +97,7 @@ function Profile() {
 
   return (
     <div className="text-white mt-5">
-      <h1 className="fw-bold mb-5 text-white">Profile</h1>{" "}
+      <h1 className="fw-bold mb-5 text-white">Edit Profile</h1>{" "}
       {!loaded && <ProjectLoader />}
       {loaded && (
         <section>
@@ -115,7 +105,7 @@ function Profile() {
           <div
             style={{
               opacity: 0.6,
-              backgroundImage: `url(${coverImageURL})`,
+              backgroundImage: `url(${coverImageURL || fabian.coverImageURL})`,
               paddingTop: "5rem",
             }}
             className="mb-5 rounded row"
@@ -130,21 +120,25 @@ function Profile() {
                     width: "80%",
                   }}
                   className="rounded-circle"
-                  src={avatarImgURL}
+                  src={avatarImgURL || fabian.avatarImgURL}
                   alt=""
                 />
               </div>
               <div className="col-md-9 text-white text-start p-4">
-                <h1 className="fw-bold text-white pt-2">{name}</h1>
+                <h1 className="fw-bold text-white pt-2">
+                  {name || fabian.name}
+                </h1>
                 <div className="">
                   <span className="badge bg-dark text-white  rounded-pill text-dark btn-sm">
-                    📍{country}
+                    📍{country || fabian.country}
                   </span>{" "}
                   <span className="badge bg-dark text-white rounded-pill text-dark btn-sm">
-                    🌐 {externalURL}
+                    🌐 {externalURL || fabian.externalURL}
                   </span>{" "}
                   <br />
-                  <p className="w-75 mt-2">{description}</p>
+                  <p className="w-75 mt-2">
+                    {description || fabian.description}
+                  </p>
                 </div>
               </div>
             </div>

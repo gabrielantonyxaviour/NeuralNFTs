@@ -1,117 +1,62 @@
 import React, { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
-import axios from "axios";
 import { useMoralis } from "react-moralis";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, gql } from "@apollo/client";
-
-const GET_ACTIVE_ITEMS = gql`
-  {
-    activeItems(first: 10, where: { buyer: "0x00000000" }) {
-      id
-      buyer
-      seller
-      nftAddress
-      tokenId
-      price
-    }
-  }
-`;
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Dashboard() {
-  const { isAuthenticated, user } = useMoralis(); // eslint-disable-line
-  const { loading, error, data } = useQuery(GET_ACTIVE_ITEMS);
-  const contract_address = "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d";
+  const { isAuthenticated, user, Moralis } = useMoralis(); // eslint-disable-line
+  const { loading, error, data } = useQuery(gql`
+    {
+      activeItems(first: 5) {
+        id
+        buyer
+        seller
+        nftAddress
+        tokenId
+        price
+      }
+    }
+  `);
+
+  const [metadataLoaded, setMetadataLoaded] = useState(false);
 
   const [nfts, setNfts] = useState([]);
-
-  function GithubCard(props) {
-    return (
-      <a
-        className="d-flex align-items-center rounded justify-content-center"
-        href={props.src}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <motion.div
-          initial={{ rotate: props.straight ? 0 : props.right ? 5 : -5 }}
-          whileHover={
-            props.threed
-              ? {
-                  y: 10,
-                  x: 10,
-                  filter: "invert(1) hue-rotate(20deg)",
-                }
-              : { scale: 1.08 }
-          }
-          className="rounded p-shadow text-primary m-3 d-flex align-items-center"
-          style={{
-            width: "18em",
-          }}
-        >
-          <div className="card-body d-flex align-content-between bg-dark text-white flex-wrap">
-            <h5 className="text-white text-center fw-bold card-title col-12 p-0">
-              Token #{props.title || "Super Skywalker"}
-            </h5>
-            <img
-              src={
-                props.src ||
-                "https://media1.giphy.com/media/VIWbOd3V8yVap4VQLt/giphy.gif?cid=ecf05e47el66l7t6vr83ibahm737l9kp0je8wvyrbb852kl3&rid=giphy.gif&ct=s"
-              }
-              className="card-img-top"
-              style={{ height: "150px", width: "100%", objectFit: "contain" }}
-              alt="..."
-            />
-            <p className="text-center mt-3 card-text text-secondary font-weight-normal col-12 p-0">
-              Minted at{" "}
-              {props.text
-                ? props.text
-                : "Some quick example text to build on the card title and make up the bulk of the card's content."}
-            </p>
-          </div>
-        </motion.div>
-      </a>
-    );
-  }
 
   useEffect(() => {
     if (error) return console.log(error);
 
     if (!loading) {
       (async () => {
-        let tokens = data.slice(0, 10);
+        let tokens = data.activeItems;
         let tokens_data = [];
 
         for (let i = 0; i < tokens.length; i++) {
-          await axios
-            .get(
-              `https://api.nftport.xyz/v0/nfts/${contract_address}/${tokens[i].token_id}`,
-              {
-                params: {
-                  chain: "ethereum",
-                },
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: "ae7af491-c4de-4de0-b08a-c4a938fda265",
-                },
-              },
-            )
-            .then((data) => {
-              tokens_data.push(data.data.nft);
+          await Moralis.Plugins.covalent
+            .getNftExternalMetadataForContract({
+              chainId: 80001,
+              contractAddress: tokens[i].nftAddress,
+              tokenId: tokens[i].tokenId,
+            })
+            .then(async (data) => {
+              let more_data = await axios.get(
+                data.data.items[0].nft_data[0].token_url,
+              );
+              tokens_data.push({ ...data.data.items[0], ...more_data.data });
             })
             .catch(async (err) => {
-              console.error(err);
-              // Wait for a second
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-              // Try again
-              i--;
+              console.log(err);
+              throw err;
             });
         }
-        setNfts(tokens_data);
         console.log(tokens_data);
+        setNfts(tokens_data);
+        setMetadataLoaded(true);
       })();
     }
-  }, []);
+  }, [data.activeItems, error, loading, Moralis]);
 
   return (
     <AnimatePresence>
@@ -130,8 +75,8 @@ function Dashboard() {
             ↩️ Select a NeuralNFT🧠 to use the model
           </h5>
 
-          {loading && <ProjectLoader />}
-          {!loading && (
+          {(loading || !metadataLoaded) && <ProjectLoader />}
+          {!loading && metadataLoaded && (
             <motion.div className="mt-md-1 pt-md-2 pt-3 mt-3">
               <Marquee
                 className="projects-marquee"
@@ -142,17 +87,12 @@ function Dashboard() {
                 gradientWidth={0}
                 gradientColor={[31, 31, 31]}
               >
-                {nfts.map((nft, index) => (
-                  <GithubCard
-                    threed
-                    straight
-                    key={index}
-                    src={nft.cached_file_url}
-                    title={nft.token_id}
-                    text={nft.mint_date}
-                    technologies={nft.metadata.attributes}
-                  />
-                ))}
+                {nfts
+                  .concat(nfts)
+                  .concat(nfts)
+                  .map((nft, index) => (
+                    <NFTCard threed straight key={index} nft={nft} />
+                  ))}
               </Marquee>
             </motion.div>
           )}
@@ -161,6 +101,49 @@ function Dashboard() {
     </AnimatePresence>
   );
 }
+
+export function NFTCard(props) {
+  return (
+    <Link
+      className="d-flex align-items-center rounded justify-content-center"
+      to={`/nft?contract_address=${props.nft.contract_address}&token_id=${props.nft.nft_data[0].token_id}`}
+    >
+      <motion.div
+        initial={{ rotate: props.straight ? 0 : props.right ? 5 : -5 }}
+        whileHover={
+          props.threed
+            ? {
+                y: 10,
+                x: 10,
+                filter: "invert(1) hue-rotate(20deg)",
+              }
+            : { scale: 1.08 }
+        }
+        className="rounded p-shadow text-primary m-3 d-flex align-items-center"
+        style={{
+          width: "18em",
+        }}
+      >
+        <div className="card-body d-flex align-content-between bg-dark text-white flex-wrap">
+          <h5 className="text-white text-start fw-bold card-title col-12 p-0">
+            {props.nft.contract_name || "Super Skywalker"}
+          </h5>
+          <img
+            src={
+              props.nft.nft_data[0].external_data.image_256 ||
+              "https://media1.giphy.com/media/VIWbOd3V8yVap4VQLt/giphy.gif?cid=ecf05e47el66l7t6vr83ibahm737l9kp0je8wvyrbb852kl3&rid=giphy.gif&ct=s"
+            }
+            className=" "
+            style={{ width: "100%", objectFit: "contain" }}
+            alt="..."
+          />
+          <p className="text-start pt-3 ">{props.nft.short_description}</p>
+        </div>
+      </motion.div>
+    </Link>
+  );
+}
+
 export function ProjectLoader() {
   function LoaderCard() {
     return (

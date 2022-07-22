@@ -27,11 +27,6 @@ function MenuItems() {
         {isAuthenticated && (
           <React.Fragment>
             <li className="bg-black btn badge btn-sm nav-item mx-2 my-2 my-md-0">
-              <NavLink className="nav-link active text-white" to="/nft">
-                NFT
-              </NavLink>
-            </li>
-            <li className="bg-black btn badge btn-sm nav-item mx-2 my-2 my-md-0">
               <NavLink className="nav-link active text-white" to="/dashboard">
                 Dashboard
               </NavLink>
@@ -41,7 +36,6 @@ function MenuItems() {
                 Profile
               </NavLink>
             </li>
-
             <li className="bg-black btn badge btn-sm nav-item mx-2 my-2 my-md-0">
               <NavLink className="nav-link active text-white" to="/support">
                 Support
