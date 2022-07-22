@@ -42,6 +42,7 @@ function Profile() {
       if (data.country) setCountry(data.country);
       setLoaded(true);
     } catch (error) {
+      setLoaded(true);
       console.log("error: ", error);
     }
   }

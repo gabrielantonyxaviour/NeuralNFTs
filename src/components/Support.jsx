@@ -3,10 +3,11 @@ import { useMoralis } from "react-moralis";
 import { Client } from "@xmtp/xmtp-js";
 
 function Support() {
-  const { isAuthenticated, user, Moralis } = useMoralis();
+  const { isAuthenticated, Moralis } = useMoralis();
   const ethers = Moralis.web3Library;
   const [conversation, setConversation] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [currentMessage, setCurrentMessage] = useState("");
 
   async function sendMessage() {
     await conversation.send("Hello world");
@@ -15,11 +16,12 @@ function Support() {
   useEffect(() => {
     if (isAuthenticated) {
       // add your logic here
-      console.dir(user?.attributes.ethAddress);
+
       (async () => {
-        const xmtp = await Client.create(ethers.Signer);
+        const wallet = ethers.Wallet.createRandom();
+        const xmtp = await Client.create(wallet);
         const conversation = await xmtp.conversations.newConversation(
-          "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+          "0x64574dDbe98813b23364704e0B00E2e71fC5aD17",
         );
         setConversation(conversation);
         // Load all messages in the conversation
@@ -36,9 +38,19 @@ function Support() {
   }, [isAuthenticated]);
 
   return (
-    <div className="text-white mt-5">
-      <h1 className="fw-bold mb-5 text-white">Dev Support</h1>
-      <div className="btn btn-dark" onClick={() => sendMessage()}>
+    <div className="text-white mt-5 text-end">
+      <h1 className="fw-bold text-white">Support</h1>
+      <h5 className="text-secondary mb-5 ">
+        powered by <span className="text-warning fw-bold">XMTP</span>
+      </h5>
+      <textarea
+        rows={4}
+        onChange={(e) => setCurrentMessage(e.target.value)}
+        value={currentMessage}
+        type="text"
+        className="bg-dark text-white form-control"
+      />
+      <div className="btn btn-dark mt-2" onClick={() => sendMessage()}>
         Send Message
       </div>
       {messages.length > 0 && (

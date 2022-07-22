@@ -7,7 +7,7 @@ import Chains from "components/Chains";
 import Home from "components/Home";
 import Profile from "components/Profile";
 import NFT from "components/NFT";
-// import Support from "components/Support";
+import Support from "components/Support";
 import Error404 from "components/Error404";
 
 import Dashboard from "components/Dashboard";
@@ -39,7 +39,7 @@ const App = ({ isServerInfo }) => {
 
   return (
     <Layout
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: "100vh", filter: "hue-rotate(93deg)" }}
       className="bg-black text-white overflow-hidden "
     >
       <Router>
@@ -94,9 +94,9 @@ const App = ({ isServerInfo }) => {
             <Route path="/dashboard">
               <Dashboard />
             </Route>
-            {/* <Route path="/support">
+            <Route path="/support">
               <Support />
-            </Route> */}
+            </Route>
 
             <Route path="/wallet">
               <Wallet />

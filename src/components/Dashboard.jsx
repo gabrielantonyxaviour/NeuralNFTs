@@ -56,7 +56,7 @@ function Dashboard() {
         setMetadataLoaded(true);
       })();
     }
-  }, [data.activeItems, error, loading, Moralis]);
+  }, [data, error, loading, Moralis]);
 
   return (
     <AnimatePresence>

@@ -29,8 +29,9 @@ function NFT() {
         let covalent_transactions =
           await Moralis.Plugins.covalent.getNftTransactionsForContract({
             chainId: 80001,
-            contractAddress: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
-            tokenId: "203",
+            contractAddress:
+              contract_address || "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+            tokenId: token_id || "203",
           });
 
         setTransactions(covalent_transactions.data.items[0].nft_transactions);
@@ -45,6 +46,7 @@ function NFT() {
             let more_data = await axios.get(
               data.data.items[0].nft_data[0].token_url,
             );
+            console.log(more_data.data);
             var name = await provider.lookupAddress(
               data.data.items[0].nft_data[0].original_owner, // eslint-disable-line
             );
@@ -61,7 +63,7 @@ function NFT() {
       })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
+  }, [isAuthenticated, Moralis]);
 
   return (
     <div className="text-white mt-5">
@@ -107,13 +109,13 @@ function NFT() {
                 Download Model ⬇️
               </a>
               <a
-                href={nftData.model}
+                href={`https://etherscan.io/address/${nftData.nft_data[0].original_owner}`}
                 className="btn btn-sm rounded bg-secondary text-light shadow fw-bold mt-2 me-2"
               >
                 {getEllipsisTxt(nftData.nft_data[0].original_owner, 6)} 🔗
               </a>
               <a
-                href={nftData.model}
+                href={nftData.external_url}
                 className="btn btn-sm rounded bg-secondary text-light shadow fw-bold mt-2 me-2"
               >
                 GitHub 🌐
