@@ -8,6 +8,7 @@ dataSources:
     source:
       address: "0xD4171D5a25B3A684d1952Dd8141fA27911004f12"
       abi: NeuralNFTMarketplace
+      startBlock: 27282570
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
