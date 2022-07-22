@@ -28,9 +28,8 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
         address seller;
     }
 
-    // Constant variables
+    /// @notice 2% of the sale of a NFT goes to the owner of the contract
     uint256 public constant PLATFORM_FEE = 2;
-    uint256 public constant LIST_FEE = 0.001 ether;
 
     // Immutable variable
     address private immutable i_owner;
@@ -39,6 +38,7 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
     mapping(address => mapping(uint256 => Listing)) private s_listings; // nftAddress => tokenId => listing
     mapping(address => uint256) private s_earnings; // user => earnings
     mapping(address => bool) private s_approvedForMarketplace; // nftAddress => approvedOrNot?
+    uint256 public s_list_fee = 0.001 ether;
 
     /// @dev Fired for indexing data using theGraph protocol (https://thegraph.com/docs/en/about/)
     event ItemListed(
@@ -125,7 +125,7 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
         notListed(nftAddress, tokenId, msg.sender)
         isOwner(nftAddress, tokenId, msg.sender)
     {
-        if (msg.value < LIST_FEE) {
+        if (msg.value < s_list_fee) {
             revert NeuralNFTMarketplace__InsufficientFunds();
         }
         if (price <= 0) {
@@ -196,11 +196,11 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
     )
         external
         payable
-        nonReentrant
         isOwner(nftAddress, tokenId, msg.sender)
         isListed(nftAddress, tokenId)
+        nonReentrant
     {
-        if (msg.value < LIST_FEE) {
+        if (msg.value < s_list_fee) {
             revert NeuralNFTMarketplace__InsufficientFunds();
         }
         if (newPrice <= 0) {
@@ -242,7 +242,15 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
         emit ApprovedNftAddress(msg.sender, nftAddress);
     }
 
-    /// @notice Getter functions
+    /// @notice Getters and Setters
+
+    function setListFee(uint256 newListFee) public {
+        if (msg.sender != i_owner) {
+            revert NeuralNFTMarketplace__NotOwner();
+        }
+        s_list_fee = newListFee;
+    }
+
     function getListing(address nftAddress, uint256 tokenId)
         external
         view
@@ -259,8 +267,8 @@ contract NeuralNFTMarketplace is ReentrancyGuard {
         return s_approvedForMarketplace[nftAddress];
     }
 
-    function getListFee() external pure returns (uint256) {
-        return LIST_FEE;
+    function getListFee() external view returns (uint256) {
+        return s_list_fee;
     }
 
     function getPlatformFee() external pure returns (uint256) {

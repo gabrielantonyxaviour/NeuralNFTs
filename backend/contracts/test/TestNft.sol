@@ -6,11 +6,20 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/// @notice Errors
 error TestNft__NonExistentToken();
 
+/**
+ * @author Gabriel Antony Xaviour
+ * @title TestNft
+ * @notice This is a recommended template contract for NeuralNFT creators.
+ * @dev This is a ERC2981 contract which provides verifiable on-chain royalties to the creator of the NFT.
+ */
 contract TestNft is ERC721, ERC721Enumerable, ERC2981, Ownable {
+    /// @notice Neural NFT metadata URI
     string public nftURI;
 
+    /// @notice Initializes royalty, TokenURI and mints the NFT to the creator
     constructor(
         string memory name,
         string memory symbol,
@@ -22,11 +31,12 @@ contract TestNft is ERC721, ERC721Enumerable, ERC2981, Ownable {
         _safeMint(msg.sender, 0);
     }
 
+    /// @notice Updates royalty data
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips) public onlyOwner {
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }
 
-    // The following functions are overrides required by Solidity.
+    /// @notice The following functions are overrides required by Solidity.
 
     function _beforeTokenTransfer(
         address from,
