@@ -56,6 +56,14 @@ module.exports = {
         },
         customChains: [
             {
+                network: "rinkeby",
+                chainId: 4,
+                urls: {
+                    apiURL: "https://api-rinkeby.etherscan.io/api",
+                    browserURL: "https://rinkeby.etherscan.io",
+                },
+            },
+            {
                 network: "mumbai",
                 chainId: 80001,
                 urls: {

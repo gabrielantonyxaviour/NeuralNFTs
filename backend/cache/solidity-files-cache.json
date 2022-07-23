@@ -1,52 +1,6 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\contracts\\NeuralNFTMarketplace.sol": {
-      "lastModificationDate": 1658473361757,
-      "contentHash": "a7186b08ce35935458d2162a5d42c646",
-      "sourceName": "contracts/NeuralNFTMarketplace.sol",
-      "solcConfig": {
-        "version": "0.8.7",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
-        "@openzeppelin/contracts/token/ERC721/IERC721.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.7"
-      ],
-      "artifacts": [
-        "NeuralNFTMarketplace"
-      ]
-    },
     "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\node_modules\\@openzeppelin\\contracts\\security\\ReentrancyGuard.sol": {
       "lastModificationDate": 1658416063761,
       "contentHash": "92f9448b23a90ea3bb932ee55cc3ccce",
@@ -78,8 +32,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -121,8 +74,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -166,8 +118,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -208,9 +159,8 @@
             }
           },
           "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
+            "useLiteralContent": false
+          }
         }
       },
       "imports": [
@@ -253,9 +203,8 @@
             }
           },
           "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
+            "useLiteralContent": false
+          }
         }
       },
       "imports": [
@@ -300,8 +249,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -351,8 +299,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -394,8 +341,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -439,8 +385,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -482,8 +427,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -525,8 +469,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -568,8 +511,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -580,51 +522,6 @@
       ],
       "artifacts": [
         "ERC165"
-      ]
-    },
-    "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\node_modules\\@openzeppelin\\contracts\\interfaces\\IERC2981.sol": {
-      "lastModificationDate": 1658416063724,
-      "contentHash": "608566bc5327454ba54e487e7c226ff6",
-      "sourceName": "@openzeppelin/contracts/interfaces/IERC2981.sol",
-      "solcConfig": {
-        "version": "0.8.7",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "../utils/introspection/IERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC2981"
       ]
     },
     "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\node_modules\\@openzeppelin\\contracts\\token\\common\\ERC2981.sol": {
@@ -658,8 +555,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -671,54 +567,6 @@
       ],
       "artifacts": [
         "ERC2981"
-      ]
-    },
-    "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\contracts\\test\\TestNft.sol": {
-      "lastModificationDate": 1658473290712,
-      "contentHash": "65dbe0c1ee6c250072d45105428f9342",
-      "sourceName": "contracts/test/TestNft.sol",
-      "solcConfig": {
-        "version": "0.8.7",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/common/ERC2981.sol",
-        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
-        "@openzeppelin/contracts/access/Ownable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.2"
-      ],
-      "artifacts": [
-        "TestNft"
       ]
     },
     "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\node_modules\\@openzeppelin\\contracts\\access\\Ownable.sol": {
@@ -751,9 +599,8 @@
             }
           },
           "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
+            "useLiteralContent": false
+          }
         }
       },
       "imports": [
@@ -764,6 +611,226 @@
       ],
       "artifacts": [
         "Ownable"
+      ]
+    },
+    "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\node_modules\\@openzeppelin\\contracts\\interfaces\\IERC2981.sol": {
+      "lastModificationDate": 1658416063724,
+      "contentHash": "608566bc5327454ba54e487e7c226ff6",
+      "sourceName": "@openzeppelin/contracts/interfaces/IERC2981.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../utils/introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC2981"
+      ]
+    },
+    "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\contracts\\NeuralNFTMarketplace.sol": {
+      "lastModificationDate": 1658601998181,
+      "contentHash": "3cf80f5957e9f10490c31c4f111d06f1",
+      "sourceName": "contracts/NeuralNFTMarketplace.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/token/common/ERC2981.sol",
+        "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
+        "@openzeppelin/contracts/utils/Counters.sol",
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.7"
+      ],
+      "artifacts": [
+        "NeuralNFTMarketplace"
+      ]
+    },
+    "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\node_modules\\@openzeppelin\\contracts\\token\\ERC721\\extensions\\ERC721URIStorage.sol": {
+      "lastModificationDate": 1658416063680,
+      "contentHash": "8af32effd0536e2971ff8496812a5016",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../ERC721.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC721URIStorage"
+      ]
+    },
+    "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\node_modules\\@openzeppelin\\contracts\\utils\\Counters.sol": {
+      "lastModificationDate": 1658416063608,
+      "contentHash": "74654e3ae5d7f39555055dfe244dab7a",
+      "sourceName": "@openzeppelin/contracts/utils/Counters.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Counters"
+      ]
+    },
+    "C:\\Users\\Gabriel\\OneDrive\\Desktop\\NeuralNFTs\\backend\\node_modules\\hardhat\\console.sol": {
+      "lastModificationDate": 1658234045921,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
       ]
     }
   }
