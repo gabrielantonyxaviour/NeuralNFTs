@@ -132,76 +132,57 @@ function NFT() {
           <p className="text-end">
             Powered by <span className="fw-bold text-danger">CovalentHQ</span>
           </p>
-          <motion.div className="mt-md-1 pt-md-2 pt-3 mt-3">
-            <Marquee
-              className=" "
-              direction="right"
-              speed={120}
-              pauseOnHover
-              gradient
-              gradientWidth={0}
-              gradientColor={[31, 31, 31]}
-            >
+
+          <table className="table text-white">
+            <thead>
+              <tr>
+                <th scope="col"># TXN</th>
+                <th scope="col">Timestamp</th>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+            <tbody>
               {transactions.map((item, index) => (
-                <TransactionCard key={index} item={item} />
+                <TransactionRow key={index} item={item} />
               ))}
-            </Marquee>
-          </motion.div>
+            </tbody>
+          </table>
         </section>
       )}
     </div>
   );
 }
 
-function TransactionCard(props) {
+function TransactionRow(props) {
   return (
-    <div className="d-flex align-items-center rounded justify-content-center">
-      <motion.div
-        whileHover={
-          props.threed
-            ? {
-                y: 10,
-                x: 10,
-                filter: "invert(1) hue-rotate(20deg)",
-              }
-            : { scale: 1.08 }
-        }
-        className="rounded p-shadow text-primary m-3 d-flex align-items-center"
-        style={{
-          width: "20em",
-        }}
-      >
-        <div className="card-body d-flex align-content-between bg-dark text-white flex-wrap">
-          <p className="text-secondary col-12 p-0">
-            <span className="text-success">#{props.item.block_height}</span> |{" "}
-            {props.item.block_signed_at || "Super Skywalker"}
-          </p>
-          <div className="col-12 mt-2">
-            From:
-            <div className="btn text-white fw-bold d-flex p-0">
-              {getEllipsisTxt(props.item.from_address, 6) || "0x000...000"}
-            </div>
-          </div>{" "}
-          <br />
-          <div className="col-12 mt-2">
-            To:
-            <div className="btn text-white fw-bold d-flex p-0">
-              {getEllipsisTxt(props.item.to_address, 6) || "0x000...000"}
-            </div>
-            {props.item.to_address_label
-              ? props.item.to_address_label + " ✓"
-              : "Anonymous"}
-          </div>{" "}
-          <br />
-          <div className="col-12 mt-2">
-            Value:
-            <div className="btn text-white fw-bold d-flex p-0">
-              {parseInt(props.item.value) / 10000000000000000000} ETH
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </div>
+    <tr className="rounded p-shadow text-warning m-3">
+      <th scope="row">{props.item.block_height}</th>
+      <td>{props.item.block_signed_at}</td>
+      <td>
+        <a
+          href={`https://etherscan.io/address/${props.item.from_address}`}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {getEllipsisTxt(props.item.from_address, 6) || "0x000...000"}
+        </a>
+      </td>
+      <td>
+        <a
+          href={`https://etherscan.io/address/${props.item.to_address}`}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {getEllipsisTxt(props.item.to_address, 6) || "0x000...000"}{" "}
+        </a>
+        {props.item.to_address_label
+          ? props.item.to_address_label + " ✓"
+          : "Anonymous"}
+      </td>
+      <td>{parseInt(props.item.value) / 10000000000000000000} ETH</td>
+    </tr>
   );
 }
 
@@ -210,7 +191,7 @@ export default NFT;
 function ProjectLoader() {
   function LoaderCard() {
     return (
-      <div className="card  card-body p-shadow bg-black rounded">
+      <div className="card card-body p-shadow bg-black rounded">
         <div className="d-flex align-items-center justify-content-center">
           <div className="spinner-grow text-secondary mx-2" role="status"></div>{" "}
           <div className="spinner-grow text-secondary mx-2" role="status"></div>
@@ -223,13 +204,10 @@ function ProjectLoader() {
   }
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      className="mt-5 text-primary d-flex align-items-center justify-content-end text-right"
-    >
+    <motion.div className="mt-5 text-primary d-flex align-items-center justify-content-end text-right">
       <Marquee
         direction="right"
-        speed={120}
+        speed={600}
         pauseOnHover
         gradient
         gradientWidth={0}

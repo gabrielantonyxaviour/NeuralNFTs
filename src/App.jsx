@@ -132,10 +132,17 @@ const App = ({ isServerInfo }) => {
         <p>
           Made with ❤️ <br /> by{" "}
           <a
-            href="https://twitter.com/gabrielaxyeth"
-            className="fw-bold text-white text-decoration-none"
+            className="fw-bold text-decoration-none"
+            href="https://twitter.com/fabianferno"
           >
-            @fabianferno & @gabrielaxy
+            @fabianferno
+          </a>{" "}
+          &{" "}
+          <a
+            href="https://twitter.com/gabrielaxyeth"
+            className="fw-bold text-decoration-none"
+          >
+            @gabrielaxy
           </a>
         </p>
       </Footer>

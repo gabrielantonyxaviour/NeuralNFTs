@@ -53,6 +53,17 @@ function Support() {
       <div className="btn btn-dark mt-2" onClick={() => sendMessage()}>
         Send Message
       </div>
+
+      <div className="card card-body bg-dark text-light mt-4 text-start">
+        Hi, what help do you need?
+      </div>
+      <div className="card card-body bg-dark text-light mt-4 text-start">
+        BTC price has been fluctuating lately, buying the capitulation isn't a
+        rough call but it's a very rough call to figure out what to do aside
+        holding. Most people don't understand how the space works. Your
+        advantage is understanding, charts won't guarantee w
+      </div>
+
       {messages.length > 0 && (
         <div className="text-white">
           {messages.map((message) => (

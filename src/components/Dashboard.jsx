@@ -158,23 +158,21 @@ export function ProjectLoader() {
   }
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      className="mt-5 text-primary d-flex align-items-center justify-content-end text-right"
-    >
+    <motion.div className="text-primary d-flex align-items-center justify-content-end text-right">
       <Marquee
         className="projects-marquee"
         direction="right"
-        speed={120}
+        speed={600}
         pauseOnHover
         gradient
         gradientWidth={0}
         gradientColor={[31, 31, 31]}
       >
-        {<LoaderCard />} <LoaderCard /> <LoaderCard />
+        <LoaderCard /> <LoaderCard /> <LoaderCard />
         <LoaderCard /> <LoaderCard /> <LoaderCard />
       </Marquee>
     </motion.div>
   );
 }
+
 export default Dashboard;
