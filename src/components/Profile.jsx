@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useMoralis } from "react-moralis";
+import { useMoralis, useChain, useWeb3Contract } from "react-moralis";
 import CeramicClient from "@ceramicnetwork/http-client";
 import ThreeIdResolver from "@ceramicnetwork/3id-did-resolver";
-
+import Marquee from "react-fast-marquee";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { EthereumAuthProvider, ThreeIdConnect } from "@3id/connect";
 import { DID } from "dids";
 import { IDX } from "@ceramicstudio/idx";
 import { ProjectLoader } from "./Dashboard";
+import { useQuery, gql } from "@apollo/client";
+
+import ABI from "../contracts/NNFT_ABI.json";
+import axios from "axios";
 
 function Profile() {
   const { isAuthenticated, user } = useMoralis();
@@ -98,7 +104,11 @@ function Profile() {
 
   return (
     <div className="text-white mt-5">
-      <h1 className="fw-bold mb-5 text-white">Edit Profile</h1>{" "}
+      <h1 className="fw-bold mb-5 text-white">Profile</h1>{" "}
+      <div className="my-3">
+        <CreatedNFTs />
+        <ListedNFTs />
+      </div>
       {!loaded && <ProjectLoader />}
       {loaded && (
         <section>
@@ -254,4 +264,263 @@ function Profile() {
   );
 }
 
+export function OwnedNFTCard(props) {
+  const {
+    runContractFunction, // eslint-disable-line
+    error,
+    isLoading,
+  } = useWeb3Contract({
+    abi: ABI,
+    contractAddress: process.env.REACT_APP_CONTRACT_ADDRESS,
+    functionName: "listItem",
+    params: {
+      tokenId: props.nft.token_id,
+      price: "1000000000000000",
+    },
+    msgValue: "1000000000000000",
+  });
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+  });
+
+  function listForSale() {
+    runContractFunction();
+  }
+
+  return (
+    <section>
+      <Link
+        onClick={() => {
+          localStorage.setItem("price", props.nft.price);
+        }}
+        className="d-flex align-items-center rounded justify-content-center"
+        to={`/nft?contract_address=${props.nft.contract_address}&token_id=${props.nft.token_id}`}
+      >
+        <motion.div
+          initial={{ rotate: props.straight ? 0 : props.right ? 5 : -5 }}
+          whileHover={
+            props.threed
+              ? {
+                  y: 10,
+                  x: 10,
+                  filter: "invert(1) hue-rotate(20deg)",
+                }
+              : { scale: 1.02 }
+          }
+          className="rounded p-shadow text-primary m-3 d-flex align-items-center"
+          style={{
+            width: "18em",
+          }}
+        >
+          <div className="card-body d-flex align-content-between bg-dark text-white flex-wrap">
+            <h5 className="text-white text-start fw-bold card-title col-12 p-0">
+              {props.nft.metadata.name || "Super Skywalker"}
+            </h5>
+            <img
+              src={
+                props.nft.file_url ||
+                "https://media1.giphy.com/media/VIWbOd3V8yVap4VQLt/giphy.gif?cid=ecf05e47el66l7t6vr83ibahm737l9kp0je8wvyrbb852kl3&rid=giphy.gif&ct=s"
+              }
+              className=" "
+              style={{ width: "100%", objectFit: "contain" }}
+              alt="..."
+            />
+            <p className="text-start pt-3 d-block">
+              {props.nft.metadata.attributes[3].value}
+            </p>{" "}
+            <br />
+          </div>
+        </motion.div>
+      </Link>
+      <div
+        onClick={listForSale}
+        className="d-flex mt-3 fw-bold bg-warning btn "
+      >
+        List for 0.01 ETH {isLoading && <Spinner />}
+      </div>
+    </section>
+  );
+}
+
 export default Profile;
+
+function Spinner() {
+  return (
+    <div className="spinner-border text-primary" role="status">
+      <span className="sr-only">Loading...</span>
+    </div>
+  );
+}
+
+function CreatedNFTs() {
+  const { user } = useMoralis();
+  const { data } = useQuery(gql`
+    {
+      allNfts(first: 5, where: { creator: "${user?.attributes.ethAddress}" }) {
+        id
+        creator
+        tokenId
+      }
+    }
+  `);
+
+  const { chainId } = useChain();
+  let chain;
+
+  switch (parseInt(chainId)) {
+    case 137:
+      chain = "ethereum";
+      break;
+    case 4:
+      chain = "rinkeby";
+      break;
+    case 80001:
+      chain = "mumbai";
+      break;
+    default:
+      chain = "ethereum"; // eslint-disable-line
+  }
+  const [nfts, setNfts] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      if (data) {
+        let tokens = data.allNfts;
+        let all_tokens_with_data = [];
+        for (let i = 0; i < tokens.length; i++) {
+          await axios
+            .get(
+              `https://api.nftport.xyz/v0/nfts/${process.env.REACT_APP_CONTRACT_ADDRESS}/${tokens[i].tokenId}`,
+              {
+                params: { chain: chain },
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "ae7af491-c4de-4de0-b08a-c4a938fda265",
+                },
+              },
+            )
+            .then(async (data) => {
+              all_tokens_with_data.push({
+                ...data.data.nft,
+              });
+            })
+            .catch(function (error) {
+              console.error(error);
+            });
+        }
+        console.log(all_tokens_with_data);
+        setNfts(all_tokens_with_data);
+      }
+    })();
+  }, []);
+
+  return (
+    <section>
+      <h2 className="text-white">Created NFTs</h2>
+      <motion.div className="mt-md-1 pt-md-2 pt-3 mt-3">
+        <Marquee
+          className=" "
+          direction="right"
+          speed={120}
+          pauseOnHover
+          gradient
+          gradientWidth={0}
+          gradientColor={[31, 31, 31]}
+        >
+          {nfts.map((nft, index) => (
+            <OwnedNFTCard threed straight key={index} nft={nft} />
+          ))}
+        </Marquee>
+      </motion.div>
+    </section>
+  );
+}
+
+function ListedNFTs() {
+  const { user } = useMoralis(); // eslint-disable-line
+  const { data } = useQuery(gql`
+    {
+      activeItems(first: 5, where: { seller: "${user?.attributes.ethAddress}" }) {
+        id
+        buyer
+        seller
+        tokenId
+        price
+      }
+    }
+  `);
+
+  const { chainId } = useChain();
+  let chain;
+
+  switch (parseInt(chainId)) {
+    case 137:
+      chain = "ethereum";
+      break;
+    case 4:
+      chain = "rinkeby";
+      break;
+    case 80001:
+      chain = "mumbai";
+      break;
+    default:
+      chain = "ethereum"; // eslint-disable-line
+  }
+  const [nfts, setNfts] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      if (data) {
+        let tokens = data.allNfts;
+        let all_tokens_with_data = [];
+        for (let i = 0; i < tokens.length; i++) {
+          await axios
+            .get(
+              `https://api.nftport.xyz/v0/nfts/${process.env.REACT_APP_CONTRACT_ADDRESS}/${tokens[i].tokenId}`,
+              {
+                params: { chain: chain },
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "ae7af491-c4de-4de0-b08a-c4a938fda265",
+                },
+              },
+            )
+            .then(async (data) => {
+              all_tokens_with_data.push({
+                ...data.data.nft,
+              });
+            })
+            .catch(function (error) {
+              console.error(error);
+            });
+        }
+        console.log(all_tokens_with_data);
+        setNfts(all_tokens_with_data);
+      }
+    })();
+  }, []);
+
+  return (
+    <section>
+      <h2 className="text-white">Listed NFTs</h2>
+      <motion.div className="mt-md-1 pt-md-2 pt-3 mt-3">
+        <Marquee
+          className=" "
+          direction="right"
+          speed={120}
+          pauseOnHover
+          gradient
+          gradientWidth={0}
+          gradientColor={[31, 31, 31]}
+        >
+          {nfts.map((nft, index) => (
+            <OwnedNFTCard threed straight key={index} nft={nft} />
+          ))}
+        </Marquee>
+      </motion.div>
+    </section>
+  );
+}
