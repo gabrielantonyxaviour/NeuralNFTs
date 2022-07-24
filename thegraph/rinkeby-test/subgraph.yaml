@@ -1,0 +1,45 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: NeuralNFTMarketplace
+    network: rinkeby
+    source:
+      address: "0x094605EB62e5AF67b9b03f51f313C747C4c7dE66"
+      abi: NeuralNFTMarketplace
+      startBlock: 11076378
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - ItemBought
+        - ItemCancelled
+        - ItemListed
+        - NewNftMinted
+        - NftRoyaltyUpdated
+        - Transfer
+      abis:
+        - name: NeuralNFTMarketplace
+          file: ./abis/NeuralNFTMarketplace.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: ItemBought(indexed address,indexed uint256,uint256)
+          handler: handleItemBought
+        - event: ItemCancelled(indexed address,indexed uint256)
+          handler: handleItemCancelled
+        - event: ItemListed(indexed address,indexed uint256,uint256)
+          handler: handleItemListed
+        - event: NewNftMinted(indexed address,indexed uint256,uint96)
+          handler: handleNewNftMinted
+        - event: NftRoyaltyUpdated(indexed uint256,uint96)
+          handler: handleNftRoyaltyUpdated
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/neural-nft-marketplace.ts
