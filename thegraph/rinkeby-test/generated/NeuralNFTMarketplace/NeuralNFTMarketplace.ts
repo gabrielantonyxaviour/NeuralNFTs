@@ -7,7 +7,7 @@ import {
   Entity,
   Bytes,
   Address,
-  BigInt,
+  BigInt
 } from "@graphprotocol/graph-ts";
 
 export class Approval extends ethereum.Event {
@@ -267,7 +267,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   balanceOf(owner: Address): BigInt {
     let result = super.call("balanceOf", "balanceOf(address):(uint256)", [
-      ethereum.Value.fromAddress(owner),
+      ethereum.Value.fromAddress(owner)
     ]);
 
     return result[0].toBigInt();
@@ -275,7 +275,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   try_balanceOf(owner: Address): ethereum.CallResult<BigInt> {
     let result = super.tryCall("balanceOf", "balanceOf(address):(uint256)", [
-      ethereum.Value.fromAddress(owner),
+      ethereum.Value.fromAddress(owner)
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -286,7 +286,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   getApproved(tokenId: BigInt): Address {
     let result = super.call("getApproved", "getApproved(uint256):(address)", [
-      ethereum.Value.fromUnsignedBigInt(tokenId),
+      ethereum.Value.fromUnsignedBigInt(tokenId)
     ]);
 
     return result[0].toAddress();
@@ -296,7 +296,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
     let result = super.tryCall(
       "getApproved",
       "getApproved(uint256):(address)",
-      [ethereum.Value.fromUnsignedBigInt(tokenId)],
+      [ethereum.Value.fromUnsignedBigInt(tokenId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -307,7 +307,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   getCreator(tokenId: BigInt): Address {
     let result = super.call("getCreator", "getCreator(uint256):(address)", [
-      ethereum.Value.fromUnsignedBigInt(tokenId),
+      ethereum.Value.fromUnsignedBigInt(tokenId)
     ]);
 
     return result[0].toAddress();
@@ -315,7 +315,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   try_getCreator(tokenId: BigInt): ethereum.CallResult<Address> {
     let result = super.tryCall("getCreator", "getCreator(uint256):(address)", [
-      ethereum.Value.fromUnsignedBigInt(tokenId),
+      ethereum.Value.fromUnsignedBigInt(tokenId)
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -355,26 +355,26 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
   }
 
   getListing(
-    tokenId: BigInt,
+    tokenId: BigInt
   ): NeuralNFTMarketplace__getListingResultValue0Struct {
     let result = super.call(
       "getListing",
       "getListing(uint256):((uint256,address))",
-      [ethereum.Value.fromUnsignedBigInt(tokenId)],
+      [ethereum.Value.fromUnsignedBigInt(tokenId)]
     );
 
     return changetype<NeuralNFTMarketplace__getListingResultValue0Struct>(
-      result[0].toTuple(),
+      result[0].toTuple()
     );
   }
 
   try_getListing(
-    tokenId: BigInt,
+    tokenId: BigInt
   ): ethereum.CallResult<NeuralNFTMarketplace__getListingResultValue0Struct> {
     let result = super.tryCall(
       "getListing",
       "getListing(uint256):((uint256,address))",
-      [ethereum.Value.fromUnsignedBigInt(tokenId)],
+      [ethereum.Value.fromUnsignedBigInt(tokenId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -382,8 +382,8 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(
       changetype<NeuralNFTMarketplace__getListingResultValue0Struct>(
-        value[0].toTuple(),
-      ),
+        value[0].toTuple()
+      )
     );
   }
 
@@ -397,7 +397,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
     let result = super.tryCall(
       "getPlatformFee",
       "getPlatformFee():(uint256)",
-      [],
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -410,7 +410,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
     let result = super.call(
       "isApprovedForAll",
       "isApprovedForAll(address,address):(bool)",
-      [ethereum.Value.fromAddress(owner), ethereum.Value.fromAddress(operator)],
+      [ethereum.Value.fromAddress(owner), ethereum.Value.fromAddress(operator)]
     );
 
     return result[0].toBoolean();
@@ -418,12 +418,12 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   try_isApprovedForAll(
     owner: Address,
-    operator: Address,
+    operator: Address
   ): ethereum.CallResult<boolean> {
     let result = super.tryCall(
       "isApprovedForAll",
       "isApprovedForAll(address,address):(bool)",
-      [ethereum.Value.fromAddress(owner), ethereum.Value.fromAddress(operator)],
+      [ethereum.Value.fromAddress(owner), ethereum.Value.fromAddress(operator)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -435,7 +435,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
   mintNft(
     nftURI: string,
     royaltyReceiver: Address,
-    _royaltyFeesInBips: BigInt,
+    _royaltyFeesInBips: BigInt
   ): BigInt {
     let result = super.call(
       "mintNft",
@@ -443,8 +443,8 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
       [
         ethereum.Value.fromString(nftURI),
         ethereum.Value.fromAddress(royaltyReceiver),
-        ethereum.Value.fromUnsignedBigInt(_royaltyFeesInBips),
-      ],
+        ethereum.Value.fromUnsignedBigInt(_royaltyFeesInBips)
+      ]
     );
 
     return result[0].toBigInt();
@@ -453,7 +453,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
   try_mintNft(
     nftURI: string,
     royaltyReceiver: Address,
-    _royaltyFeesInBips: BigInt,
+    _royaltyFeesInBips: BigInt
   ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "mintNft",
@@ -461,8 +461,8 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
       [
         ethereum.Value.fromString(nftURI),
         ethereum.Value.fromAddress(royaltyReceiver),
-        ethereum.Value.fromUnsignedBigInt(_royaltyFeesInBips),
-      ],
+        ethereum.Value.fromUnsignedBigInt(_royaltyFeesInBips)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -488,7 +488,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   ownerOf(tokenId: BigInt): Address {
     let result = super.call("ownerOf", "ownerOf(uint256):(address)", [
-      ethereum.Value.fromUnsignedBigInt(tokenId),
+      ethereum.Value.fromUnsignedBigInt(tokenId)
     ]);
 
     return result[0].toAddress();
@@ -496,7 +496,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   try_ownerOf(tokenId: BigInt): ethereum.CallResult<Address> {
     let result = super.tryCall("ownerOf", "ownerOf(uint256):(address)", [
-      ethereum.Value.fromUnsignedBigInt(tokenId),
+      ethereum.Value.fromUnsignedBigInt(tokenId)
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -507,34 +507,34 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   royaltyInfo(
     _tokenId: BigInt,
-    _salePrice: BigInt,
+    _salePrice: BigInt
   ): NeuralNFTMarketplace__royaltyInfoResult {
     let result = super.call(
       "royaltyInfo",
       "royaltyInfo(uint256,uint256):(address,uint256)",
       [
         ethereum.Value.fromUnsignedBigInt(_tokenId),
-        ethereum.Value.fromUnsignedBigInt(_salePrice),
-      ],
+        ethereum.Value.fromUnsignedBigInt(_salePrice)
+      ]
     );
 
     return new NeuralNFTMarketplace__royaltyInfoResult(
       result[0].toAddress(),
-      result[1].toBigInt(),
+      result[1].toBigInt()
     );
   }
 
   try_royaltyInfo(
     _tokenId: BigInt,
-    _salePrice: BigInt,
+    _salePrice: BigInt
   ): ethereum.CallResult<NeuralNFTMarketplace__royaltyInfoResult> {
     let result = super.tryCall(
       "royaltyInfo",
       "royaltyInfo(uint256,uint256):(address,uint256)",
       [
         ethereum.Value.fromUnsignedBigInt(_tokenId),
-        ethereum.Value.fromUnsignedBigInt(_salePrice),
-      ],
+        ethereum.Value.fromUnsignedBigInt(_salePrice)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -543,8 +543,8 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       new NeuralNFTMarketplace__royaltyInfoResult(
         value[0].toAddress(),
-        value[1].toBigInt(),
-      ),
+        value[1].toBigInt()
+      )
     );
   }
 
@@ -567,7 +567,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
     let result = super.call(
       "supportsInterface",
       "supportsInterface(bytes4):(bool)",
-      [ethereum.Value.fromFixedBytes(interfaceId)],
+      [ethereum.Value.fromFixedBytes(interfaceId)]
     );
 
     return result[0].toBoolean();
@@ -577,7 +577,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
     let result = super.tryCall(
       "supportsInterface",
       "supportsInterface(bytes4):(bool)",
-      [ethereum.Value.fromFixedBytes(interfaceId)],
+      [ethereum.Value.fromFixedBytes(interfaceId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -603,7 +603,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   tokenURI(tokenId: BigInt): string {
     let result = super.call("tokenURI", "tokenURI(uint256):(string)", [
-      ethereum.Value.fromUnsignedBigInt(tokenId),
+      ethereum.Value.fromUnsignedBigInt(tokenId)
     ]);
 
     return result[0].toString();
@@ -611,7 +611,7 @@ export class NeuralNFTMarketplace extends ethereum.SmartContract {
 
   try_tokenURI(tokenId: BigInt): ethereum.CallResult<string> {
     let result = super.tryCall("tokenURI", "tokenURI(uint256):(string)", [
-      ethereum.Value.fromUnsignedBigInt(tokenId),
+      ethereum.Value.fromUnsignedBigInt(tokenId)
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();

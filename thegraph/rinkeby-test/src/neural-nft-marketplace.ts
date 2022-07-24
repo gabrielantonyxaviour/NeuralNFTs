@@ -30,7 +30,7 @@ export function handleItemListed(event: ItemListedEvent): void {
   activeItem.price = event.params.price;
 
   activeItem.buyer = Address.fromString(
-    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000"
   );
 
   itemListed.save();
@@ -41,7 +41,7 @@ export function handleItemCanceled(event: ItemCanceledEvent): void {
   let activeItem = ActiveItem.load(event.params.tokenId.toHexString());
 
   activeItem!.buyer = Address.fromString(
-    "0x000000000000000000000000000000000000dEaD",
+    "0x000000000000000000000000000000000000dEaD"
   );
 
   activeItem!.save();

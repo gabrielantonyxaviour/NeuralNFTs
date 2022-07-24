@@ -8,7 +8,7 @@ import {
   store,
   Bytes,
   BigInt,
-  BigDecimal,
+  BigDecimal
 } from "@graphprotocol/graph-ts";
 
 export class ActiveItem extends Entity {
@@ -23,7 +23,7 @@ export class ActiveItem extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type ActiveItem must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+        `Entities of type ActiveItem must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("ActiveItem", id.toString(), this);
     }
@@ -99,7 +99,7 @@ export class ItemListed extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type ItemListed must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+        `Entities of type ItemListed must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("ItemListed", id.toString(), this);
     }
@@ -166,7 +166,7 @@ export class AllNft extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type AllNft must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+        `Entities of type AllNft must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("AllNft", id.toString(), this);
     }
