@@ -372,7 +372,7 @@ function CreatedNFTs() {
 
   switch (parseInt(chainId)) {
     case 137:
-      chain = "ethereum";
+      chain = "polygon";
       break;
     case 4:
       chain = "rinkeby";
@@ -458,7 +458,7 @@ function ListedNFTs() {
 
   switch (parseInt(chainId)) {
     case 137:
-      chain = "ethereum";
+      chain = "polygon";
       break;
     case 4:
       chain = "rinkeby";
