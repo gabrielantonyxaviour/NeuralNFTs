@@ -23,8 +23,10 @@ NeuralNFT is an ERC2981 token which is basically a ML model NFT. Our project is 
 It was a wonderful ride working with all the sponsors, running into issues, talking with the devs and sorting it out. Our project is built like a superhero with super powers of our sponsors Polygon, NFTPort, theGraph, Ceramic, IPFS/Filecoin, Spheron, Lit Protocol, XMTP, Covalent. We deployed our super contract (powered by Openzepplin) on Polygon Mainnet. All NeuralNFTs are deployed to IPFS using web3.storage's amazing API. The contract emits few events which are indexed using the smooth indexing protocol theGraph for easy and fast data retrieval. Using the retrieved data, the NFT metadata and details are fetched with the help of powerful API provided by NFTPort. Transaction history and other analytics are provided by the robust Covalent API. We were really interested to work with XMTP and wanted to include it in our project somehow in a meaningful way and hence we used it for user support in our dApp. We used Ceramic 3ID DID/IDX to create a decentralized identity for the user profile. We used the BasicProfile schema provided by them. Last but not the least, hands down the most easiest protocol to use was Spheron which we used for hosting our dApp. We used Hardhat to build the backend for our project and writing tests. We used React and Moralis Auth to build the frontend. It was a beautiful experience. Thank you!
 ***
 This project is a submission for **HackFS 2022**.
-*
+***
 The project is deployed using Spheron at: 
-*
-Refer the official documentation on how to use our project here: 
-Join
+***
+Refer the official documentation on how to use our project here: https://github.com/gabrielantonyxaviour/NeuralNFTs/wiki
+***
+Join the Neural NFT family by following this link:
+https://discord.gg/vHWadhXT
