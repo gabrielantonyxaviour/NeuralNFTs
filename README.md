@@ -1,6 +1,7 @@
 # NeuralNFTMarketplace
 This project is a submission for **HackFS 2022**.
 ***
+NeuralNFTMarketplace is live on polygon mainnet: https://polygonscan.com/address/0xAC397838bbdc501e3637165c396f4EfA3E958229
 The project is deployed using Spheron at: 
 ***
 Refer the official documentation on how to use our project here: https://github.com/gabrielantonyxaviour/NeuralNFTs/wiki
