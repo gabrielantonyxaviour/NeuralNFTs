@@ -8,6 +8,7 @@ import Home from "components/Home";
 import Profile from "components/Profile";
 import NFT from "components/NFT";
 import Support from "components/Support";
+import Mint from "components/Mint";
 import Error404 from "components/Error404";
 
 import Dashboard from "components/Dashboard";
@@ -96,6 +97,9 @@ const App = ({ isServerInfo }) => {
             </Route>
             <Route path="/support">
               <Support />
+            </Route>
+            <Route path="/mint">
+              <Mint />
             </Route>
 
             <Route path="/wallet">

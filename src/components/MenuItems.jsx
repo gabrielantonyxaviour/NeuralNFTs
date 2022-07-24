@@ -19,13 +19,13 @@ function MenuItems() {
   function Items() {
     return (
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        {/* <li className="bg-black btn badge btn-sm nav-item mx-2 my-2 my-md-0">
-          <NavLink className="nav-link active text-white" to="/">
-            Home
-          </NavLink>
-        </li> */}
         {isAuthenticated && (
           <React.Fragment>
+            <li className="bg-black btn badge btn-sm nav-item mx-2 my-2 my-md-0">
+              <NavLink className="nav-link active text-white" to="/mint">
+                Mint
+              </NavLink>
+            </li>
             <li className="bg-black btn badge btn-sm nav-item mx-2 my-2 my-md-0">
               <NavLink className="nav-link active text-white" to="/dashboard">
                 Dashboard

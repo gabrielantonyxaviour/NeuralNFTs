@@ -45,6 +45,7 @@ function Account() {
           <p
             className="btn-lg mb-1 fw-bold d-flex align-items-center justify-content-center bg-warning"
             style={{
+              color: "#000000",
               cursor: "pointer",
             }}
           >
@@ -65,6 +66,7 @@ function Account() {
         >
           <div
             style={{
+              color: "#000000",
               padding: "10px",
               display: "flex",
               justifyContent: "center",

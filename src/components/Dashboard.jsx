@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
-import { useMoralis } from "react-moralis";
+import { useMoralis, useChain } from "react-moralis";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
@@ -14,7 +14,6 @@ function Dashboard() {
         id
         buyer
         seller
-        nftAddress
         tokenId
         price
       }
@@ -22,37 +21,58 @@ function Dashboard() {
   `);
 
   const [metadataLoaded, setMetadataLoaded] = useState(false);
-
   const [nfts, setNfts] = useState([]);
 
+  const { chainId } = useChain();
+  let chain;
+
+  switch (parseInt(chainId)) {
+    case 137:
+      chain = "ethereum";
+      break;
+    case 4:
+      chain = "rinkeby";
+      break;
+    case 80001:
+      chain = "mumbai";
+      break;
+    default:
+      chain = "ethereum"; // eslint-disable-line
+  }
+
   useEffect(() => {
-    if (error) return console.log(error);
+    if (error) return console.log("Graph Error: ", error);
 
     if (!loading) {
       (async () => {
         let tokens = data.activeItems;
-        let tokens_data = [];
+        console.log("Data from TheGraph: ", tokens);
+        let all_tokens_with_data = [];
 
         for (let i = 0; i < tokens.length; i++) {
-          await Moralis.Plugins.covalent
-            .getNftExternalMetadataForContract({
-              chainId: 80001,
-              contractAddress: tokens[i].nftAddress,
-              tokenId: tokens[i].tokenId,
-            })
+          await axios
+            .get(
+              `https://api.nftport.xyz/v0/nfts/${process.env.REACT_APP_CONTRACT_ADDRESS}/${tokens[i].tokenId}`,
+              {
+                params: { chain: chain },
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "ae7af491-c4de-4de0-b08a-c4a938fda265",
+                },
+              },
+            )
             .then(async (data) => {
-              let more_data = await axios.get(
-                data.data.items[0].nft_data[0].token_url,
-              );
-              tokens_data.push({ ...data.data.items[0], ...more_data.data });
+              all_tokens_with_data.push({
+                ...data.data.nft,
+                price: tokens[i].price,
+              });
             })
-            .catch(async (err) => {
-              console.log(err);
-              throw err;
+            .catch(function (error) {
+              console.error(error);
             });
         }
-        console.log(tokens_data);
-        setNfts(tokens_data);
+        console.log("All Tokens with Data: ", all_tokens_with_data);
+        setNfts(all_tokens_with_data);
         setMetadataLoaded(true);
       })();
     }
@@ -105,8 +125,11 @@ function Dashboard() {
 export function NFTCard(props) {
   return (
     <Link
+      onClick={() => {
+        localStorage.setItem("price", props.nft.price);
+      }}
       className="d-flex align-items-center rounded justify-content-center"
-      to={`/nft?contract_address=${props.nft.contract_address}&token_id=${props.nft.nft_data[0].token_id}`}
+      to={`/nft?contract_address=${props.nft.contract_address}&token_id=${props.nft.token_id}`}
     >
       <motion.div
         initial={{ rotate: props.straight ? 0 : props.right ? 5 : -5 }}
@@ -117,7 +140,7 @@ export function NFTCard(props) {
                 x: 10,
                 filter: "invert(1) hue-rotate(20deg)",
               }
-            : { scale: 1.08 }
+            : { scale: 1.02 }
         }
         className="rounded p-shadow text-primary m-3 d-flex align-items-center"
         style={{
@@ -126,18 +149,20 @@ export function NFTCard(props) {
       >
         <div className="card-body d-flex align-content-between bg-dark text-white flex-wrap">
           <h5 className="text-white text-start fw-bold card-title col-12 p-0">
-            {props.nft.contract_name || "Super Skywalker"}
+            {props.nft.metadata.name || "Super Skywalker"}
           </h5>
           <img
             src={
-              props.nft.nft_data[0].external_data.image_256 ||
+              props.nft.file_url ||
               "https://media1.giphy.com/media/VIWbOd3V8yVap4VQLt/giphy.gif?cid=ecf05e47el66l7t6vr83ibahm737l9kp0je8wvyrbb852kl3&rid=giphy.gif&ct=s"
             }
             className=" "
             style={{ width: "100%", objectFit: "contain" }}
             alt="..."
           />
-          <p className="text-start pt-3 ">{props.nft.short_description}</p>
+          <p className="text-start pt-3 ">
+            {props.nft.metadata.attributes[3].value}
+          </p>
         </div>
       </motion.div>
     </Link>
