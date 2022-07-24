@@ -1,0 +1,21 @@
+type ActiveItem @entity {
+  id: ID!
+  buyer: Bytes! # address
+  seller: Bytes! # address
+  tokenId: BigInt!
+  price: BigInt
+}
+
+type ItemListed @entity {
+  id: ID!
+  seller: Bytes! # addres
+  tokenId: BigInt!
+  price: BigInt
+}
+
+type AllNft @entity {
+  id: ID!
+  creator: Bytes! # address
+  tokenId: BigInt!
+  royalty: BigInt
+}

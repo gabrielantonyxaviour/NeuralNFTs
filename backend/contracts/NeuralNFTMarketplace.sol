@@ -10,37 +10,36 @@ import "hardhat/console.sol";
 
 /// @notice Error Declarations
 error NeuralNFTMarketplace__PriceMustBeAboveZero();
-error NeuralNFTMarketplace__NotApprovedForMarketplace();
 error NeuralNFTMarketplace__AlreadyListed(uint256 tokenId);
 error NeuralNFTMarketplace__NotOwner();
 error NeuralNFTMarketplace__NotListed(uint256 tokenId);
 error NeuralNFTMarketplace__PriceNotMet(uint256 tokenId, uint256 price);
-error NeuralNFTMarketplace__NoProceeds();
+error NeuralNFTMarketplace__NoEarnings();
 error NeuralNFTMarketplace__TransferFailed();
 error NeuralNFTMarketplace__InsufficientFunds();
 error NeuralNFTMarketplace__AlreadyApproved();
 error NeuralNFTMarketplace__RoyaltyFeesTooHigh(uint96);
 error NeuralNFTMarketplace__CannotCallOutsideContract();
-error NeuralNFTMarketplace__NotCreator(uint256 tokenId, address caller);
+error NeuralNFTMarketplace__NotCreator();
 
 /**
  * @author Gabriel Antony Xaviour
  * @title NeuralNFTMarketplace
  * @notice A marketplace for NFTs with the sixth sense
- * @dev ENeural NFTs are ERC2981 to provide
+ * @dev ReentrancyGuard protects the contract from fraud. ERC2981 for on-chain non-custodial royalty. ERC721URIStorage to store URI for minted NeuralNFTs
  */
 contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
-    using Counters for Counters.Counter;
-
-    Counters.Counter private _tokenIds;
-
     // Structures
     struct Listing {
         uint256 price;
         address seller;
     }
 
-    /// @notice 2% of the sale of a NFT goes to the owner of the contract
+    /// @notice Counter for tokenId of NeuralNFTs minted
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
+
+    /// @notice 2% of the sale of a NFT goes to the owner
     uint256 public constant PLATFORM_FEE = 2;
 
     // Immutable variable
@@ -51,11 +50,15 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
 
     mapping(address => uint256) private s_earnings; // user => earnings
 
-    mapping(uint256 => address) private s_creator;
+    mapping(uint256 => address) private s_creator; // tokenId => creator
 
+    /// @notice List fee modifiable by the owner
     uint256 public s_list_fee = 0.001 ether;
 
-    /// @dev Fired for indexing data using theGraph protocol (https://thegraph.com/docs/en/about/)
+    /**
+     * @notice These events are fired each time a function emits it
+     * @dev Fired for indexing data using theGraph protocol (https://thegraph.com/docs/en/about/)
+     */
     event ItemListed(address indexed seller, uint256 indexed tokenId, uint256 price);
 
     event ItemBought(address indexed buyer, uint256 indexed tokenId, uint256 price);
@@ -66,7 +69,7 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
 
     event NftRoyaltyUpdated(uint256 indexed tokenId, uint96 royaltyFees);
 
-    /// @notice Modifiers pre-defined for cleaner code
+    /// @notice Reverts if the nft is listed
     modifier notListed(uint256 tokenId, address owner) {
         Listing memory listing = s_listings[tokenId];
         if (listing.price > 0) {
@@ -75,6 +78,7 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
         _;
     }
 
+    /// @notice Reverts if the nft is not listed
     modifier isListed(uint256 tokenId) {
         Listing memory listing = s_listings[tokenId];
         if (listing.price <= 0) {
@@ -83,6 +87,7 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
         _;
     }
 
+    /// @notice Reverts if the caller is not the owner of the NFT
     modifier isOwner(uint256 tokenId, address spender) {
         if (spender != ownerOf(tokenId)) {
             revert NeuralNFTMarketplace__NotOwner();
@@ -90,6 +95,7 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
         _;
     }
 
+    /// @notice Reverts if royalty percentage set is too high
     modifier isRoyaltyTooHigh(uint96 _royaltyFeesInBips) {
         if (_royaltyFeesInBips > 2000) {
             revert NeuralNFTMarketplace__RoyaltyFeesTooHigh(_royaltyFeesInBips);
@@ -97,9 +103,10 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
         _;
     }
 
-    modifier isCreator(uint256 tokenId, address creator) {
-        if (s_creator[tokenId] != creator) {
-            revert NeuralNFTMarketplace__NotCreator(tokenId, creator);
+    /// @notice Reverts if the caller is not the creator of the NFT
+    modifier isCreator(uint256 tokenId, address caller) {
+        if (s_creator[tokenId] != caller) {
+            revert NeuralNFTMarketplace__NotCreator();
         }
         _;
     }
@@ -109,41 +116,28 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
         i_owner = msg.sender;
     }
 
-    // Receive and Fallback functions
+    /// @notice This function executes when eth is sent to the contract with no data
     receive() external payable {
         s_earnings[i_owner] += msg.value;
     }
 
+    /// @notice This function executes when eth is sent to the contract with data
     fallback() external payable {
         s_earnings[i_owner] += msg.value;
     }
 
-    function approve(address to, uint256 tokenId) public override {
-        super.approve(to, tokenId);
-    }
-
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public override notListed(tokenId, from) {
-        super.transferFrom(from, to, tokenId);
-    }
-
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public override notListed(tokenId, from) {
-        console.log(msg.sender == address(this));
-        super.transferFrom(from, to, tokenId);
-    }
-
+    /**
+     * @notice Mints a NeuralNFT to the creator and fires NewNftMinted
+     * @dev Mints an ERC2981 NFT and stores the URI with ERC721URIStorage
+     * @param nftURI The URI of NeuralNFT metadata
+     * @param royaltyReceiver Address that receives the royalty
+     * @param _royaltyFeesInBips Royalty percentage desired expressed in bips
+     */
     function mintNft(
-        string memory nftURI, // the CID returned from nftstorage
+        string memory nftURI,
         address royaltyReceiver,
         uint96 _royaltyFeesInBips
-    ) public isRoyaltyTooHigh(_royaltyFeesInBips) nonReentrant returns (uint256 newItemId) {
+    ) external isRoyaltyTooHigh(_royaltyFeesInBips) nonReentrant returns (uint256 newItemId) {
         newItemId = _tokenIds.current();
         _safeMint(msg.sender, newItemId);
         _setTokenRoyalty(newItemId, royaltyReceiver, _royaltyFeesInBips);
@@ -153,22 +147,28 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
         emit NewNftMinted(msg.sender, newItemId, _royaltyFeesInBips);
     }
 
+    /**
+     * @notice Sets the royalty receiver address, royalty fees and fires NewNftMinted
+     * @param _tokenId The NeuralNFT tokenId to set royalty info
+     * @param _receiver Address that receives the royalty
+     * @param _royaltyFeesInBips Royalty percentage desired expressed in bips
+     */
     function setRoyaltyInfo(
         uint256 _tokenId,
         address _receiver,
         uint96 _royaltyFeesInBips
-    ) public isRoyaltyTooHigh(_royaltyFeesInBips) isCreator(_tokenId, msg.sender) {
+    ) external isRoyaltyTooHigh(_royaltyFeesInBips) isCreator(_tokenId, msg.sender) {
         _setTokenRoyalty(_tokenId, _receiver, _royaltyFeesInBips);
         emit NftRoyaltyUpdated(_tokenId, _royaltyFeesInBips);
     }
 
     /**
-     * @notice Lists an NFT for sale on the marketplace
-     * @param tokenId The ID of the NFT in the NFT contract
+     * @notice Lists a NeuralNFT for sale on the marketplace
+     * @param tokenId The ID of the NeuralNFT
      * @param price The desired listing price by the seller
      */
     function listItem(uint256 tokenId, uint256 price)
-        public
+        external
         payable
         notListed(tokenId, msg.sender)
         isOwner(tokenId, msg.sender)
@@ -180,9 +180,6 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
             revert NeuralNFTMarketplace__PriceMustBeAboveZero();
         }
         approve(address(this), tokenId);
-        if (getApproved(tokenId) != address(this)) {
-            revert NeuralNFTMarketplace__NotApprovedForMarketplace();
-        }
 
         s_earnings[i_owner] += msg.value;
         s_listings[tokenId] = Listing(price, msg.sender);
@@ -190,8 +187,9 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
     }
 
     /**
-     * @notice Buys an NFT which is on sale in the marketplace
-     * @param tokenId The ID of the NFT in the NFT contract
+     * @notice Buys a NeuralNFT which is listed in the marketplace
+     * @dev Protected by nonReentrant
+     * @param tokenId The ID of the NeuralNFT
      */
     function buyItem(uint256 tokenId) external payable isListed(tokenId) nonReentrant {
         Listing memory listing = s_listings[tokenId];
@@ -209,8 +207,9 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
     }
 
     /**
-     * @notice Cancels a listing by the user in the marketplace
-     * @param tokenId The ID of the NFT in the NFT contract
+     * @notice Cancels a listing created by the user in the marketplace
+     * @dev Protected by nonReentrant
+     * @param tokenId The ID of the NeuralNFT
      */
     function cancelListing(uint256 tokenId)
         external
@@ -223,8 +222,9 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
     }
 
     /**
-     * @notice Updates a listing by the user which is on sale in the marketplace
-     * @param tokenId The ID of the NFT in the NFT contract
+     * @notice Updates an existing listing by the seller in the marketplace
+     * @dev Protected by nonReentrant
+     * @param tokenId The ID of the NeuralNFT
      * @param newPrice The updated listing price proposed by the seller
      */
     function updateListing(uint256 tokenId, uint256 newPrice)
@@ -249,20 +249,78 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
      * @notice Withdraws the earnings made by the user in the marketplace
      * @dev Reentrancy guard put into action preventing multiple calls to this function
      */
-    function withdrawProceeds() external nonReentrant {
-        uint256 proceeds = s_earnings[msg.sender];
-        if (proceeds <= 0) {
-            revert NeuralNFTMarketplace__NoProceeds();
+    function withdrawEarnings() external nonReentrant {
+        uint256 earnings = s_earnings[msg.sender];
+        if (earnings <= 0) {
+            revert NeuralNFTMarketplace__NoEarnings();
         }
         s_earnings[msg.sender] = 0;
-        (bool success, ) = payable(msg.sender).call{value: proceeds}("");
+        (bool success, ) = payable(msg.sender).call{value: earnings}("");
         if (!success) {
             revert NeuralNFTMarketplace__TransferFailed();
         }
     }
 
-    /// @notice The following functions are overrides required by Solidity.
+    /**
+     * @notice Sets list fee for NeuralNFTs in the marketplace
+     * @dev Can be called only by the owner of the marketplace
+     */
+    function setListFee(uint256 newListFee) external {
+        if (msg.sender != i_owner) {
+            revert NeuralNFTMarketplace__NotOwner();
+        }
+        s_list_fee = newListFee;
+    }
 
+    /// @notice Gets list fee for NeuralNFTs in the marketplace
+    function getListFee() external view returns (uint256) {
+        return s_list_fee;
+    }
+
+    /// @notice Gets lisitng information for a listed NeuralNFT
+    function getListing(uint256 tokenId) external view isListed(tokenId) returns (Listing memory) {
+        return s_listings[tokenId];
+    }
+
+    /// @notice Gets current balance for a user in NeuralNFTMarketplace
+    function getEarnings() external view returns (uint256) {
+        return s_earnings[msg.sender];
+    }
+
+    /// @notice Gets the platform fee percentage for each NeuralNFT transactions
+    function getPlatformFee() external pure returns (uint256) {
+        return PLATFORM_FEE;
+    }
+
+    /// @notice Gets the creator of NeuralNFT token
+    function getCreator(uint256 tokenId)
+        external
+        view
+        isCreator(tokenId, msg.sender)
+        returns (address)
+    {
+        return s_creator[tokenId];
+    }
+
+    /// @notice Overrides transferFrom from ERC721 contract with an added modifier notListed
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override notListed(tokenId, from) {
+        super.transferFrom(from, to, tokenId);
+    }
+
+    /// @notice Overrides safeTransferFrom from ERC721 contract with an added modifier notListed
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override notListed(tokenId, from) {
+        super.transferFrom(from, to, tokenId);
+    }
+
+    /// @notice This is a required override by ERC2981
     function _beforeTokenTransfer(
         address from,
         address to,
@@ -271,6 +329,7 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
+    /// @notice This is a required override by ERC2981
     function supportsInterface(bytes4 interfaceId)
         public
         view
@@ -278,30 +337,5 @@ contract NeuralNFTMarketplace is ERC2981, ERC721URIStorage, ReentrancyGuard {
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
-    }
-
-    /// @notice Getters and Setters
-
-    function setListFee(uint256 newListFee) public {
-        if (msg.sender != i_owner) {
-            revert NeuralNFTMarketplace__NotOwner();
-        }
-        s_list_fee = newListFee;
-    }
-
-    function getListing(uint256 tokenId) external view returns (Listing memory) {
-        return s_listings[tokenId];
-    }
-
-    function getEarnings() external view returns (uint256) {
-        return s_earnings[msg.sender];
-    }
-
-    function getListFee() external view returns (uint256) {
-        return s_list_fee;
-    }
-
-    function getPlatformFee() external pure returns (uint256) {
-        return PLATFORM_FEE;
     }
 }
