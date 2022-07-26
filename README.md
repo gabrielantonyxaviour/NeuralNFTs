@@ -21,6 +21,8 @@ The project is deployed using Spheron at:
 
 ***
 Refer the official docs: https://github.com/gabrielantonyxaviour/NeuralNFTs/wiki
+
+View the presentation to know more: https://github.com/gabrielantonyxaviour/NeuralNFTs/blob/stable/HackFS%202022%20-%20NeuralNFTs.pdf
 ***
 Join the Neural NFT community by following this link:
 https://discord.gg/vHWadhXT
